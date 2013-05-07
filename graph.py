@@ -12,6 +12,11 @@ class AdjacencyMatrix(Matrix):
     def set_edge(self, node_1, node_2, value = 1):
         super(Matrix, self).set_edge(node_1, node_2, value)
 
+# Base implementation of the a matrix. You can set the neighbors of a particular
+# node, or the edge between two nodes.
+#
+# Nodes are represented as integers, and num_nodes provides the number of nodes
+# that are in the matrix.
 class Matrix:
     def __init__(self, num_nodes):
         self.num_nodes = num_nodes
