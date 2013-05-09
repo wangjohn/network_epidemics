@@ -8,13 +8,13 @@ import history
 # the infection.
 class Infection:
     def __init__(self, graph, history = False, infection_mechanism = None,
-            protection_mechanism = None, cost_function = None):
+            protection_mechanism = None, utility_function = None):
         self.graph = graph
         self.current_iteration = 0
         self.infected_nodes = [0 for i in xrange(self.graph.num_nodes)]
         self.infection_mechanism = infection_mechanism
         self.protection_mechanism = protection_mechanism
-        self.cost_function = cost_function
+        self.utility_function = utility_function
 
         self._set_history(history)
 
