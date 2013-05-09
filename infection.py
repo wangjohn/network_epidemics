@@ -23,6 +23,7 @@ class Infection:
     # use the simple scheme of infect with probability (1-q) if the disease has
     # reached a neighbor.
     def next_iteration(self):
+        self.current_iteration += 1
         if infection_mechanism:
             self.infection_mechanism.next_iteration(self)
         else:
@@ -30,7 +31,9 @@ class Infection:
                 if self._sterile_but_adjacent_to_infected(i):
                     self._infect_node(i, 1-self.graph.protection_list[i])
 
-    def _infect_node(self, node, probability = 1):
+    # This is the method that should be used whenever you are attempting to
+    # infect a node. It makes sure to track the history of infection.
+    def infect_node(self, node, probability = 1):
         if probability == 1 or probability < random.random():
             self.history.infect(node, self.current_iteration)
             self.infected_nodes[node] = 1
