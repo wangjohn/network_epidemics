@@ -12,7 +12,7 @@ class Graph:
     # only checks the outside of the matrix.
     def _check_matching_sizes(self):
         if (len(self.adjacency_matrix) != self.num_nodes or
-            len(self.protection_matrix) != self.num_nodes):
+            len(self.protection_list) != self.num_nodes):
             raise Exception("Adjacency and Protection matrix are not the same size")
 
 class AdjacencyMatrix(Matrix):
