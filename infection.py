@@ -45,8 +45,9 @@ class Infection:
         if self.infection_mechanism:
             self.infection_mechanism.next_iteration()
         else:
+            previous_infected_nodes = list(self.infected_nodes)
             for i in xrange(self.graph.num_nodes):
-                if self._sterile_but_adjacent_to_infected(i):
+                if self._sterile_but_adjacent_to_infected(i, previous_infected_nodes):
                     self._infect_node(i, 1-self.graph.protection_list[i])
 
     # This is the method that should be used whenever you are attempting to
@@ -62,14 +63,14 @@ class Infection:
 
     # Returns true if node has not yet been infected but is adjacent to an
     # infected node, false otherwise.
-    def _sterile_but_adjacent_to_infected(self, node):
-        if self.infected_nodes[node] == 1:
+    def _sterile_but_adjacent_to_infected(self, node, infected_nodes):
+        if infected_nodes[node] == 1:
             return False
 
         # Check to see if a neighbor is infected
         for neighbor in xrange(self.graph.num_nodes):
             if (self.graph.adjacency_matrix[node][neighbor] == 1 and
-                self.infected_nodes[neighbor] == 1):
+                infected_nodes[neighbor] == 1):
                   return True
         return False
 
