@@ -10,13 +10,16 @@ class Infection:
         self.infected_nodes = [0 for i in xrange(self.graph.num_nodes)]
         self.infection_mechanism = infection_mechanism
 
-        # Keep a history object which logs each stage of the infection.
-        # If the history object is None, then no history will be taken.
-        self.history = history
+        self._set_history(history)
+
+    def run_infection(self, num_iterations, start_node = "random"):
+        self.start_infection(start_node)
+        for iteration in xrange(num_iterations):
+            self.next_iteration()
 
     def start_infection(self, start_node = "random"):
         start_node = self._get_start_node(start_node)
-        self._infect_node(self, start_node)
+        self._infect_node(start_node, start_node = True)
 
     # Gets the next iteration in the infection on the graph. If we have defined
     # an infection mechanism, then use that to get the next iteration. Otherwise
@@ -34,9 +37,13 @@ class Infection:
     # This is the method that should be used whenever you are attempting to
     # infect a node. It makes sure to track the history of infection.
     def infect_node(self, node, probability = 1):
-        if probability == 1 or probability < random.random():
-            self.history.infect(node, self.current_iteration)
+        if probability == 1 or random.random() < probability:
+            self._log_infection(node)
             self.infected_nodes[node] = 1
+
+    def _log_infection(self, node):
+        if self.history:
+            self.history.infect(node)
 
     # Returns true if node has not yet been infected but is adjacent to an
     # infected node, false otherwise.
@@ -46,8 +53,8 @@ class Infection:
 
         # Check to see if a neighbor is infected
         for neighbor in xrange(self.graph.num_nodes):
-            if self.graph.adjacency_matrix[node][neighbor] == 1 and
-                self.infected_nodes[neighbor] == 1:
+            if (self.graph.adjacency_matrix[node][neighbor] == 1 and
+                self.infected_nodes[neighbor] == 1):
                   return True
         return False
 
@@ -60,3 +67,10 @@ class Infection:
             raise Exception("The start node must be an integer or the string 'random'.")
 
         return start_node
+
+    # Keep a history object which logs each stage of the infection.
+    # If the history object is None, then no history will be taken.
+    def _set_history(self, history):
+        self.history = history
+        if self.history:
+            self.history.set_infection_object(self)
