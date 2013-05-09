@@ -1,14 +1,19 @@
 import random
+import history
 
 # This is a class which plays the game of spreading an infection throughout the
 # graph.
 #
+# If you include a history object, then you can track what happens throughout
+# the infection.
 class Infection:
-    def __init__(self, graph, infection_mechanism = None, history = None):
+    def __init__(self, graph, history = False, infection_mechanism = None,
+            protection_mechanism = None):
         self.graph = graph
         self.current_iteration = 0
         self.infected_nodes = [0 for i in xrange(self.graph.num_nodes)]
         self.infection_mechanism = infection_mechanism
+        self.protection_mechanism = protection_mechanism
 
         self._set_history(history)
 
@@ -27,8 +32,17 @@ class Infection:
     # reached a neighbor.
     def next_iteration(self):
         self.current_iteration += 1
-        if infection_mechanism:
-            self.infection_mechanism.next_iteration(self)
+
+        # If there is a protection mechnaism, change the protections in each
+        # iteration
+        if self.protection_mechanism:
+            self.graph.protection_list = self.protection_mechanism.next_iteration()
+            self.history.change_protection(self.graph.protection_list)
+
+        # Now start infecting (if we don't have an infection mechanism, use the 
+        # default mechanism)
+        if self.infection_mechanism:
+            self.infection_mechanism.next_iteration()
         else:
             for i in xrange(self.graph.num_nodes):
                 if self._sterile_but_adjacent_to_infected(i):
@@ -73,4 +87,4 @@ class Infection:
     def _set_history(self, history):
         self.history = history
         if self.history:
-            self.history.set_infection_object(self)
+            self.history = history.History(self, self.graph.adjacency_matrix)

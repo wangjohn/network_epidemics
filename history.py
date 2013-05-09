@@ -14,13 +14,14 @@ import collections
 #
 # Where +i+ is the node that is infected.
 class History:
-    def __init__(self, adjacency_matrix = None):
+    def __init__(self, infection_object, adjacency_matrix = None):
         self.adjacency_matrix = adjacency_matrix
-        self.infection_object = None
-        self.infection_logs = collections.defaultdict(list)
-
-    def set_infection_object(self, infection_object):
         self.infection_object = infection_object
+        self.infection_logs = collections.defaultdict(list)
+        self.protection_logs = {}
+
+    def change_protection(self, protection_list):
+        self.protection_logs[infection_object.current_iteration] = protection_list
 
     def infect(self, node):
         log = InfectionLog(node, "infect", infection_object.current_iteration)
