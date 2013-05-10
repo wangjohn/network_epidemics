@@ -23,7 +23,7 @@ class Infection:
 
     def run_infection(self, num_iterations, start_node = "random"):
         self.start_infection(start_node)
-        for iteration in xrange(num_iterations):
+        while len(self.frontier) >= 0:
             self.next_iteration()
 
     def start_infection(self, start_node = "random"):
