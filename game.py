@@ -6,7 +6,7 @@ class Game:
 		self.network = graph
 		self.utility_function = utility_function
 		self.zombie = zombie
-		#0 is utility maximizing, 1 is social welfare maximizing
+            #0 is utility maximizing, 1 is social welfare maximizing
 		self.node_types = [0 for n in range(graph.num_nodes)]
 
 	def setFSampling(self, f):
@@ -23,7 +23,7 @@ class Game:
 		degree_list = self.graph.degree_list
 		topDegreeIndices = sorted(range(len(degree_list)), key=lambda i: degree_list[i])[-floor(f*len(degree_list)):]
 		for index in topDegreeIndices:
-			self.node_types[index] = 1
+            self.node_types[index] = 1
 
 	#assume everyone is of type 0 - selfish type
 	def compute_nash(self):

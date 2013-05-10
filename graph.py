@@ -15,6 +15,9 @@ class Graph:
             len(self.protection_list) != self.num_nodes):
             raise Exception("Adjacency and Protection matrix are not the same size")
 
+    def degree_list(self):
+        return [sum(self.adjacency_matrix.matrix[i]) for i in range(len(self.num_nodes))]
+
 class AdjacencyMatrix(Matrix):
     def set_edge(self, node_1, node_2, value = 1):
         super(Matrix, self).set_edge(node_1, node_2, value)
