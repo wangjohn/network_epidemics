@@ -45,27 +45,21 @@ class Infection:
             self.history.change_protection(self.graph.protection_list)
 
         # Now start infecting with the infection mechanism
-        (new_infection_nodes, next_frontier) = self.infection_mechanism.next_iteration()
-        self._update_iteration_variables(new_infection_nodes, next_frontier)
+        next_frontier = self.infection_mechanism.next_iteration()
+        self.frontier = next_frontier
 
     # This is the method that should be used whenever you are attempting to
     # infect a node. It makes sure to track the history of infection.
     def infect_node(self, node, probability = 1):
         if node not in self.seen_infection:
             if probability == 1 or random.random() < probability:
-                self._log_infection(node, True)
+                infected = True
                 self.infected_nodes[node] = 1
             else:
-                self._log_infection(node, False)
+                infected = False
             self.seen_infection.add(node)
-
-    # Extend the frontier to the next level, add the +newly_seen_infection+ nodes
-    # to the seen_infection set, and infect nodes with a particular
-    # probability from the new_infection_nodes list.
-    def _update_iteration_variables(new_infection_nodes, next_frontier):
-        for i in new_infection_nodes:
-            self.infect_node(i, 1-self.graph.protection_list[i])
-        self.frontier = sets.Set(next_frontier)
+            self._log_infection(node, infected)
+            return infected
 
     def _log_infection(self, node, infected = True):
         if self.history:
