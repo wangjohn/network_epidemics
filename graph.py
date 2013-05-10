@@ -7,6 +7,9 @@ class Graph:
         # Check to make sure the matrices are the right dimensions
         self._check_matching_sizes()
 
+    def neighbors(self, node):
+        return [i for i in xrange(len(self.num_nodes)) if self.adjacency_matrix[node][i] == 1]
+
     # This method checks to make sure that all of the sizes that are defined
     # in the graph are matching. Note that it doesn't do a full check, but it
     # only checks the outside of the matrix.
