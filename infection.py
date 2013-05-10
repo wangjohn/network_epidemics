@@ -47,21 +47,18 @@ class Infection:
         # Now start infecting (if we don't have an infection mechanism, use the 
         # default mechanism)
         if self.infection_mechanism:
-            self.infection_mechanism.next_iteration()
+            (new_infection_nodes, next_frontier, newly_visited) = self.infection_mechanism.next_iteration()
         else:
-            previous_infected_nodes = list(self.infected_nodes)
+            new_infection_nodes = []
             next_frontier = []
             newly_visited = []
             for i in self.frontier:
                 if self._adjacent_to_infected(i, previous_infected_nodes):
-                    self._infect_node(i, 1-self.graph.protection_list[i])
+                    new_infection_nodes.append(i)
                 next_frontier.extend(self._frontier_for(i))
                 newly_visited.append(i)
 
-            # extend the frontier to the next level, and add the visited nodes
-            # to the already_visited set.
-            self.frontier = sets.Set(next_frontier)
-            [self.already_visited.add(i) for i in newly_visited]
+        self._handle_iteration(new_infection_nodes, next_frontier, newly_visited)
 
     # This is the method that should be used whenever you are attempting to
     # infect a node. It makes sure to track the history of infection.
@@ -71,6 +68,15 @@ class Infection:
             self.infected_nodes[node] = 1
         else:
             self._log_infection(node, False)
+
+    # Extend the frontier to the next level, add the visited nodes
+    # to the already_visited set, and infect nodes with a particular
+    # probability from the new_infection_nodes list.
+    def _handle_iteration(new_infection_nodes, next_frontier, newly_visited):
+        for i in new_infection_nodes:
+            self.infect_node(i, 1-self.graph.protection_list[i])
+        self.frontier = sets.Set(next_frontier)
+        [self.already_visited.add(i) for i in newly_visited]
 
     def _log_infection(self, node, infected = True):
         if self.history:
