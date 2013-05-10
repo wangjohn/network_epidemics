@@ -13,12 +13,12 @@ class Infection:
         self.graph = graph
         self.current_iteration = 0
         self.frontier = []
-        self.already_visited = sets.Set()
+        self.seen_infection = sets.Set()
         self.infected_nodes = [0 for i in xrange(self.graph.num_nodes)]
-        self.infection_mechanism = infection_mechanism
+
+        self._set_infection_mechansim(infection_mechanism)
         self.protection_mechanism = protection_mechanism
         self.utility_function = utility_function
-
         self._set_history(history)
 
     def run_infection(self, num_iterations, start_node = "random"):
@@ -44,55 +44,26 @@ class Infection:
             self.graph.protection_list = self.protection_mechanism.next_iteration()
             self.history.change_protection(self.graph.protection_list)
 
-        # Now start infecting (if we don't have an infection mechanism, use the 
-        # default mechanism)
-        if self.infection_mechanism:
-            (new_infection_nodes, next_frontier, newly_visited) = self.infection_mechanism.next_iteration()
-        else:
-            new_infection_nodes = []
-            next_frontier = []
-            newly_visited = []
-            for i in self.frontier:
-                if self._adjacent_to_infected(i, previous_infected_nodes):
-                    new_infection_nodes.append(i)
-                next_frontier.extend(self._frontier_for(i))
-                newly_visited.append(i)
-
-        self._handle_iteration(new_infection_nodes, next_frontier, newly_visited)
+        # Now start infecting with the infection mechanism
+        next_frontier = self.infection_mechanism.next_iteration()
+        self.frontier = next_frontier
 
     # This is the method that should be used whenever you are attempting to
     # infect a node. It makes sure to track the history of infection.
     def infect_node(self, node, probability = 1):
-        if probability == 1 or random.random() < probability:
-            self._log_infection(node, True)
-            self.infected_nodes[node] = 1
-        else:
-            self._log_infection(node, False)
-
-    # Extend the frontier to the next level, add the visited nodes
-    # to the already_visited set, and infect nodes with a particular
-    # probability from the new_infection_nodes list.
-    def _handle_iteration(new_infection_nodes, next_frontier, newly_visited):
-        for i in new_infection_nodes:
-            self.infect_node(i, 1-self.graph.protection_list[i])
-        self.frontier = sets.Set(next_frontier)
-        [self.already_visited.add(i) for i in newly_visited]
+        if node not in self.seen_infection:
+            if probability == 1 or random.random() < probability:
+                infected = True
+                self.infected_nodes[node] = 1
+            else:
+                infected = False
+            self.seen_infection.add(node)
+            self._log_infection(node, infected)
+            return infected
 
     def _log_infection(self, node, infected = True):
         if self.history:
             self.history.infect(node, infected)
-
-    def _frontier_for(self, node):
-        return [j for j in xrange(self.graph.num_nodes) if (
-            self.graph.adjacency_matrix[node][j] == 1 and
-            j not in self.already_visited
-            )]
-
-    def _adjacent_to_infected(self, node, infected_nodes):
-        for i in xrange(self.graph.num_nodes):
-            if self.graph.adjacency_matrix[node][i] == 1 and infected_nodes[i] == 1:
-                return True
-        return False
 
     # Obtains the start node and does a check to make sure it is an intege, or
     # that it is randomly selected.
@@ -110,3 +81,9 @@ class Infection:
         self.history = history
         if self.history:
             self.history = history.History(self, self.graph.adjacency_matrix)
+
+    def _set_infection_mechanism(self, infection_mechanism):
+        if infection_mechanism:
+            self.infection_mechanism = infection_mechanism
+        else:
+            self.infection_mechanism = BasicInfectionMechanism(self)
