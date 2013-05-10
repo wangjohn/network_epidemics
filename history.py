@@ -23,8 +23,11 @@ class History:
     def change_protection(self, protection_list):
         self.protection_logs[infection_object.current_iteration] = protection_list
 
-    def infect(self, node):
-        log = InfectionLog(node, "infect", infection_object.current_iteration)
+    def infect(self, node, infected):
+        if infected:
+            log = InfectionLog(node, "infected", infection_object.current_iteration)
+        else:
+            log = InfectionLog(node, "remain_uninfected", infection_object.current_iteration)
         log.configure_payload(self.infection_object)
         self.infection_logs[infection_object.current_iteration].append(log)
 

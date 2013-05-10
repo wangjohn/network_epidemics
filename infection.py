@@ -74,7 +74,7 @@ class Infection:
 
     def _log_infection(self, node, infected = True):
         if self.history:
-            self.history.infect(node)
+            self.history.infect(node, infected)
 
     def _frontier_for(self, node):
         return [j for j in xrange(self.graph.num_nodes) if (
