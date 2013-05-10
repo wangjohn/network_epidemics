@@ -1,5 +1,6 @@
 import random
 import history
+import sets
 
 # This is a class which plays the game of spreading an infection throughout the
 # graph.
@@ -11,6 +12,8 @@ class Infection:
             protection_mechanism = None, utility_function = None):
         self.graph = graph
         self.current_iteration = 0
+        self.frontier = []
+        self.already_visited = sets.Set()
         self.infected_nodes = [0 for i in xrange(self.graph.num_nodes)]
         self.infection_mechanism = infection_mechanism
         self.protection_mechanism = protection_mechanism
@@ -25,7 +28,8 @@ class Infection:
 
     def start_infection(self, start_node = "random"):
         start_node = self._get_start_node(start_node)
-        self._infect_node(start_node, start_node = True)
+        self.frontier = [start_node]
+        self.infect_node(start_node)
 
     # Gets the next iteration in the infection on the graph. If we have defined
     # an infection mechanism, then use that to get the next iteration. Otherwise
@@ -45,32 +49,43 @@ class Infection:
         if self.infection_mechanism:
             self.infection_mechanism.next_iteration()
         else:
-            for i in xrange(self.graph.num_nodes):
-                if self._sterile_but_adjacent_to_infected(i):
+            previous_infected_nodes = list(self.infected_nodes)
+            next_frontier = []
+            newly_visited = []
+            for i in self.frontier:
+                if self._adjacent_to_infected(i, previous_infected_nodes):
                     self._infect_node(i, 1-self.graph.protection_list[i])
+                next_frontier.extend(self._frontier_for(i))
+                newly_visited.append(i)
+
+            # extend the frontier to the next level, and add the visited nodes
+            # to the already_visited set.
+            self.frontier = sets.Set(next_frontier)
+            [self.already_visited.add(i) for i in newly_visited]
 
     # This is the method that should be used whenever you are attempting to
     # infect a node. It makes sure to track the history of infection.
     def infect_node(self, node, probability = 1):
         if probability == 1 or random.random() < probability:
-            self._log_infection(node)
+            self._log_infection(node, True)
             self.infected_nodes[node] = 1
+        else:
+            self._log_infection(node, False)
 
-    def _log_infection(self, node):
+    def _log_infection(self, node, infected = True):
         if self.history:
             self.history.infect(node)
 
-    # Returns true if node has not yet been infected but is adjacent to an
-    # infected node, false otherwise.
-    def _sterile_but_adjacent_to_infected(self, node):
-        if self.infected_nodes[node] == 1:
-            return False
+    def _frontier_for(self, node):
+        return [j for j in xrange(self.graph.num_nodes) if (
+            self.graph.adjacency_matrix[node][j] == 1 and
+            j not in self.already_visited
+            )]
 
-        # Check to see if a neighbor is infected
-        for neighbor in xrange(self.graph.num_nodes):
-            if (self.graph.adjacency_matrix[node][neighbor] == 1 and
-                self.infected_nodes[neighbor] == 1):
-                  return True
+    def _adjacent_to_infected(self, node, infected_nodes):
+        for i in xrange(self.graph.num_nodes):
+            if self.graph.adjacency_matrix[node][i] == 1 and infected_nodes[i] == 1:
+                return True
         return False
 
     # Obtains the start node and does a check to make sure it is an intege, or
