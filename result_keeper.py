@@ -5,12 +5,14 @@ class ResultKeeper:
         self.graph_generator = graph_generator
         self.headers = headers
         self.results = []
+        self.graphs_counter = collections.Counter()
 
     def row_headers(self, headers):
         self.headers = headers
 
-    def append(self, result_list):
+    def append(self, result_list, graph = None):
         self.results.append(result_list)
+        self.graphs_counter[graph] += 1
 
     def averages_grouped_by(self, group):
         grouped_results = collections.defaultdict(list)
@@ -24,14 +26,19 @@ class ResultKeeper:
         return averages
 
     def print_averages_grouped_by(self, group, filename = None):
-        self.print_out(("{:15s} " * len(self.headers)).format(self.headers), filename)
+        self.print_out(("{:15s} " * len(self.headers)).format(*self.headers))
         format_string = "{:15f} " * len(self.headers)
-        for group_key, summary in self.averages_grouped_by(group).iteritems():
-            string = format_string.format(*summary)
-            self.print_out(string, filename)
 
-    def print_out(self, string, filename):
-        if filename:
+        grouped_averages = self.averages_grouped_by(group)
+        self.print_out("Total Number of Trials: %s" % len(self.results))
+        self.print_out("Total Number of Groups: %s" % len(group_averages))
+        self.print_out("Total Number of Graphs: %s" % len(self.graphs_counter))
+
+        for group_key, summary in self.averages_grouped_by(group).iteritems():
+            self.print_out(format_string.format(*summary))
+
+    def print_out(self, string):
+        if self.filename:
             with open(filename, 'a') as f:
                 f.write(string)
         print string
