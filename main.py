@@ -12,7 +12,7 @@ def compute_average_probability(graph, protection_range, num_trials = 250):
 
         probabilities = compute_probabilities_object.monte_carlo_compute(num_trials)
         probabilities_hash[q] = sum(probabilities) / num_nodes
-        protection_string.format(str(probabilities), str(probabilities_hash[q]), str(1 - probabilities - probabilities_hash[q]))
+        protection_string.format(str(q), str(probabilities_hash[q]), str(1 - q - probabilities_hash[q]))
     return probabilities_hash
 
 
