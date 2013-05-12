@@ -19,7 +19,7 @@ class ResultKeeper:
 
         averages = {}
         for group_key, result_list in grouped_results.iteritems():
-            averages[group_key] = average_list_elements(result_list, len(self.headers))
+            averages[group_key] = self.average_list_elements(result_list, len(self.headers))
 
         return averages
 

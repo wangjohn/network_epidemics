@@ -26,7 +26,7 @@ class Infection:
         self.ATTACK_PROBABILITY = attack_probability
         self.CURE_PROBABILITY = cure_probability
 
-        self._set_infection_mechansim(infection_mechanism)
+        self._set_infection_mechanism(infection_mechanism)
         self._set_protection_mechanism(protection_mechanism)
         self._set_history(history)
         self.verbose = verbose.Verbose(debug)
@@ -128,6 +128,8 @@ class Infection:
     def _set_protection_mechanism(self, protection_mechanism):
         if protection_mechanism == "dynamic":
             self.protection_mechanism = DynamicProtectionMechanism(self)
+        else:
+            self.protection_mechanism = None
 
 class ComputeInfectionProbabilities:
     def __init__(self, graph, protection_list, start_node,
