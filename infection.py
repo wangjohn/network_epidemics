@@ -11,8 +11,7 @@ from infection_mechanism import *
 class Infection:
     def __init__(self, graph, protection_list, history = False,
             infection_mechanism = None,
-            protection_mechanism = None,
-            utility_function = None):
+            protection_mechanism = None):
         self.graph = graph
         self.protection_list = protection_list
         self.current_iteration = 0
@@ -22,10 +21,9 @@ class Infection:
 
         self._set_infection_mechansim(infection_mechanism)
         self.protection_mechanism = protection_mechanism
-        self.utility_function = utility_function
         self._set_history(history)
 
-    def run_infection(self, num_iterations, start_node = "random"):
+    def run_infection(self, start_node = "random"):
         self.start_infection(start_node)
         while len(self.frontier) >= 0:
             self.next_iteration()
@@ -96,15 +94,41 @@ class Infection:
 
 
 class ComputeInfectionProbabilities:
-    def __init__(self, graph):
+    def __init__(self, graph, protection_list, start_node,
+            infection_mechanism = None,
+            protection_mechanism = None):
         self.graph = graph
+        self.protection_list = protection_list
+        self.start_node = start_node
 
-    def compute(self, protection_list, start_node):
-        infection_probabilities = [None for i in xrange(self.graph.num_nodes)]
-        infection_probabilities[self.start_node] = 1
+        self.infection_mechanism = infection_mechanism
+        self.protection_mechanism = protection_mechanism
 
-        # Fill out the neighbors of the infected node
+        # Storage list for the probabilities of infection
+        self.infection_probabilities = [None for i in xrange(self.graph.num_nodes)]
+        self.infection_probabilities[self.start_node] = 1
+
         for i in self.graph.neighbors(self.start_node):
-            infection_probabilities[i] = 1 - protection_list[i]
+            self.infection_probabilities[i] = 1 - self.protection_list[i]
 
-        # Now create a system of equations
+    def monte_carlo_compute(self, num_trials):
+        protection_list_sum = [0 for i in xrange(self.graph.num_nodes)]
+
+        for i in xrange(num_trials):
+            infection_object = Infection(self.graph, self.protection_list,
+                    infection_mechansim = self.infection_mechanism,
+                    protection_mechanism = self.protection_mechanism)
+            infection_object.run_infection(self.start_node)
+            infection_object.protection_list
+            protection_list_sum = [sum(a) for a in zip(protection_list_sum, infection_object.protection_list)]
+
+        return [float(i) / num_trials for i in protection_list_sum]
+
+    def _initialize_infection_probabilities(self, initialize_neighbors = True):
+        # Storage list for the probabilities of infection
+        self.infection_probabilities = [None for i in xrange(self.graph.num_nodes)]
+        self.infection_probabilities[self.start_node] = 1
+
+        if initialize_neighbors:
+            for i in self.graph.neighbors(self.start_node):
+                self.infection_probabilities[i] = 1 - self.protection_list[i]
