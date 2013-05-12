@@ -1,6 +1,7 @@
 import random
 import history
 import sets
+import verbose
 from infection_mechanism import *
 
 # This is a class which plays the game of spreading an infection throughout the
@@ -9,12 +10,11 @@ from infection_mechanism import *
 # If you include a history object, then you can track what happens throughout
 # the infection.
 class Infection:
-
-
     def __init__(self, graph, protection_list, history = False,
             infection_mechanism = None,
             protection_mechanism = None,
-            attack_probability = 0):
+            attack_probability = 0,
+            debug = True):
         self.graph = graph
         self.protection_list = protection_list
         self.current_iteration = 0
@@ -26,6 +26,7 @@ class Infection:
         self._set_infection_mechanism(infection_mechanism)
         self.protection_mechanism = protection_mechanism
         self._set_history(history)
+        self.verbose = verbose.Verbose(debug)
 
     def run_infection(self, start_node = "random"):
         self.start_infection(start_node)
@@ -52,6 +53,7 @@ class Infection:
 
         # Now start infecting with the infection mechanism
         newly_infected_nodes = self.infection_mechanism.next_iteration()
+        self.verbose.p("Infected nodes: ", newly_infected_nodes)
         for node in set(newly_infected_nodes):
             self.infect_node(node, 1-self.protection_list[node])
         self.frontier = newly_infected_nodes
@@ -107,7 +109,6 @@ class Infection:
             self.infection_mechanism=DynamicInfectionMechanism(self)
         else:
             self.infection_mechanism = BasicInfectionMechanism(self)
-
 
 class ComputeInfectionProbabilities:
     def __init__(self, graph, protection_list, start_node,
