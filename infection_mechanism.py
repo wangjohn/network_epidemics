@@ -21,9 +21,10 @@ class BasicInfectionMechanism(InfectionMechanism):
     def next_iteration(self):
         new_infection_nodes = []
         for i in self.infection_object.frontier:
-            if (self._adjacent_to_infected(i) and 
-                    i not in self.infection_object.seen_infection):
-                new_infection_nodes.append(i)
+            for j in self.infection_object.graph.neighbors(i):
+                if (self._adjacent_to_infected(j) and
+                        j not in self.infection_object.seen_infection):
+                    new_infection_nodes.append(j)
         return (new_infection_nodes)
 
     def _adjacent_to_infected(self, node):
