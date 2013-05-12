@@ -14,13 +14,16 @@ class UtilityFunction:
         cost = self.cost_function.calculate_cost(protection)
         return self.uninfected_value * infection_probability - cost
 
+
     def calculate_negative_utility(self, infection_probability, protection):
         return -1.0 * calculate_utility(self, infection_probability, protection)
 
-    def maximize(self):
+    def maximize(self, probability_function):
         #Use minimize negative utility for q in [0, 1] to maximize utility
-        optimizationResult = scipy.optimize.minimize_scalar(calculate_negative_utility, bounds=(0,1), method='Bounded')
+        optimizationResult = scipy.optimize.minimize_scalar(lambda x: self.calculate_negative_utility(probability_function(x), x), bounds=(0,1), method='Bounded')
         return optimizationResult.x
+
+    
 
 
 # An abstract class for the cost function. All cost functions should implement
