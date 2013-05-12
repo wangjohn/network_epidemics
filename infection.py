@@ -22,7 +22,7 @@ class Infection:
         self.frontier = []
         self.seen_infection = sets.Set()
         self.infected_nodes = [0 for i in xrange(self.graph.num_nodes)]
-        
+
         self.attack_probability = attack_probability
         self.cure_probability = cure_probability
 
