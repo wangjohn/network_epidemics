@@ -33,3 +33,12 @@ class BasicInfectionMechanism(InfectionMechanism):
                     self.infection_object.infected_nodes[i] == 1):
                 return True
         return False
+
+class DynamicInfectionMechanism(InfectionMechanism):
+
+    def next_interation(self):
+
+        for i in self.infection_object.graph.infected_nodes:
+            if i==0:
+                infected=self.infection_object.new_infect_node(i, self.infection_object.ATTACK_PROBABILITY)
+

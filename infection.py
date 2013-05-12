@@ -9,15 +9,18 @@ from infection_mechanism import *
 # If you include a history object, then you can track what happens throughout
 # the infection.
 class Infection:
+
     def __init__(self, graph, protection_list, history = False,
             infection_mechanism = None,
-            protection_mechanism = None):
+            protection_mechanism = None
+            attack_probability = 0):
         self.graph = graph
         self.protection_list = protection_list
         self.current_iteration = 0
         self.frontier = []
         self.seen_infection = sets.Set()
         self.infected_nodes = [0 for i in xrange(self.graph.num_nodes)]
+        self.ATTACK_PROBABILITY=attack_probability
 
         self._set_infection_mechansim(infection_mechanism)
         self.protection_mechanism = protection_mechanism
@@ -65,6 +68,17 @@ class Infection:
             self._log_infection(node, infected)
             return infected
 
+    # This method attempts to infect a node with some probability in the dynamic infection mechanism
+    def new_infect_node(self, node, probability=1):
+        if probability == 1 or random.random()<probability:
+            infected=True
+            self.infected_nodes[node]=1
+        else:
+            infected=False
+        self.seen_infection.add(node)
+        self._log_infection(node,infected)
+        return infected
+
     def _log_infection(self, node, infected = True):
         if self.history:
             self.history.infect(node, infected)
@@ -86,9 +100,10 @@ class Infection:
         if self.history:
             self.history = history.History(self, self.graph.adjacency_matrix)
 
+    # defaults to basic, unless specified to dynamic
     def _set_infection_mechanism(self, infection_mechanism):
-        if infection_mechanism:
-            self.infection_mechanism = infection_mechanism
+        if infection_mechanism=="dynamic":
+            self.infection_mechanism=DynamicInfectionMechanism(self)
         else:
             self.infection_mechanism = BasicInfectionMechanism(self)
 
