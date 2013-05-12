@@ -32,7 +32,7 @@ class BasicInfectionMechanism(InfectionMechanism):
                 if (self.adjacent_to_infected(j) and
                         j not in self.infection_object.seen_infection):
                     new_infection_nodes.append(j)
-        return (new_infection_nodes)
+        return new_infection_nodes
 
     
 
