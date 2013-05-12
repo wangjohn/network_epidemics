@@ -1,11 +1,12 @@
 import collections
 
 class ResultKeeper:
-    def __init__(self, graph_generator, headers = None):
+    def __init__(self, graph_generator, headers = None, filename = None):
         self.graph_generator = graph_generator
         self.headers = headers
         self.results = []
         self.graphs_counter = collections.Counter()
+        self.filename = filename
 
     def row_headers(self, headers):
         self.headers = headers
@@ -25,21 +26,21 @@ class ResultKeeper:
 
         return averages
 
-    def print_averages_grouped_by(self, group, filename = None):
+    def print_averages_grouped_by(self, group):
         self.print_out(("{:15s} " * len(self.headers)).format(*self.headers))
         format_string = "{:15f} " * len(self.headers)
 
         grouped_averages = self.averages_grouped_by(group)
         self.print_out("Total Number of Trials: %s" % len(self.results))
-        self.print_out("Total Number of Groups: %s" % len(group_averages))
+        self.print_out("Total Number of Groups: %s" % len(grouped_averages))
         self.print_out("Total Number of Graphs: %s" % len(self.graphs_counter))
 
-        for group_key, summary in self.averages_grouped_by(group).iteritems():
+        for group_key, summary in grouped_averages.iteritems():
             self.print_out(format_string.format(*summary))
 
     def print_out(self, string):
         if self.filename:
-            with open(filename, 'a') as f:
+            with open(self.filename, 'a') as f:
                 f.write(string)
         print string
 

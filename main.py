@@ -14,7 +14,8 @@ def compute_average_probability(graph, protection_range, result_history, num_tri
         result_history.append([q, prob, std, 1-q-prob], graph)
         print protection_string.format(str(q), str(prob), str(std), str(1 - q - prob))
 
-def generate_and_test_graphs(erdos_parameters_range, protection_range, graph_generations = 1, filename = None):
+def generate_and_test_graphs(erdos_parameters_range, protection_range, 
+        graph_generations = 1, filename = None):
     for (prob, nodes) in erdos_parameters_range:
         er_generator = erdos_renyi.ErdosRenyi(prob, nodes)
         print "Erdos Renyi, p = %s, n = %s" % (prob, nodes)
@@ -33,4 +34,4 @@ if __name__ == '__main__':
     protection_range = [float(i)/100 for i in xrange(5, 100, 5)]
     output_filename = 'output'
 
-    generate_and_test_graphs(erdos_parameters_range, protection_range, 5, filename)
+    generate_and_test_graphs(erdos_parameters_range, protection_range, 2, output_filename)
