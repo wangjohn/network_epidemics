@@ -34,4 +34,4 @@ if __name__ == '__main__':
     protection_range = [float(i)/100 for i in xrange(5, 100, 5)]
     output_filename = 'output'
 
-    generate_and_test_graphs(erdos_parameters_range, protection_range, 2, output_filename)
+    generate_and_test_graphs(erdos_parameters_range, protection_range, 100, output_filename)
