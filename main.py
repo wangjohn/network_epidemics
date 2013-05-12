@@ -11,16 +11,22 @@ def compute_average_probability(graph, protection_range, num_trials = 250):
         compute_probabilities_object = infection.ComputeInfectionProbabilities(graph, protection_list, 0)
 
         probabilities = compute_probabilities_object.monte_carlo_compute(num_trials)
-        probabilities_hash[q] = sum(probabilities) / num_nodes
-        protection_string.format(str(q), str(probabilities_hash[q]), str(1 - q - probabilities_hash[q]))
+        probabilities_hash[q] = sum(probabilities) / graph.num_nodes
+        print protection_string.format(str(q), str(probabilities_hash[q]), str(1 - q - probabilities_hash[q]))
     return probabilities_hash
 
+def generate_and_test_graphs(erdos_parameters_range, protection_range, graph_generations = 5):
+    for (prob, nodes) in erdos_parameters_range:
+        er_generator = erdos_renyi.ErdosRenyi(prob, nodes)
+        print "Erdos Renyi, p = %s, n = %s" % (prob, nodes)
+        for i in xrange(graph_generations):
+            current_graph = graph.Graph(er_generator.draw_adjacency_matrix())
+
+            print "Erdos Renyi, p = %s, n = %s, Graph %s" % (prob, nodes, i)
+            compute_average_probability(current_graph, protection_range)
 
 if __name__ == '__main__':
-    erdos_edge_probability = 0.1
-    num_nodes = 100
-    er_generator = erdos_renyi.ErdosRenyi(erdos_edge_probability, num_nodes)
-    graph = graph.Graph(er_generator.draw_adjacency_matrix())
+    erdos_parameters_range = [(0.05, 100), (0.1, 100), (0.15, 100), (0.20, 100), (0.25, 100)]
     protection_range = [float(i)/100 for i in xrange(5, 100, 5)]
 
-    print compute_average_probability(graph, protection_range)
+    generate_and_test_graphs(erdos_parameters_range, protection_range)
