@@ -9,9 +9,13 @@ from infection_mechanism import *
 # If you include a history object, then you can track what happens throughout
 # the infection.
 class Infection:
-    def __init__(self, graph, history = False, infection_mechanism = None,
-            protection_mechanism = None, utility_function = None, attack_probability=0):
+
+    def __init__(self, graph, protection_list, history = False,
+            infection_mechanism = None,
+            protection_mechanism = None,
+            utility_function = None, attack_probability=0):
         self.graph = graph
+        self.protection_list = protection_list
         self.current_iteration = 0
         self.frontier = []
         self.seen_infection = sets.Set()
@@ -43,12 +47,14 @@ class Infection:
         # If there is a protection mechnaism, change the protections in each
         # iteration
         if self.protection_mechanism:
-            self.graph.protection_list = self.protection_mechanism.next_iteration()
-            self.history.change_protection(self.graph.protection_list)
+            self.protection_list = self.protection_mechanism.next_iteration()
+            self.history.change_protection(self.protection_list)
 
         # Now start infecting with the infection mechanism
-        next_frontier = self.infection_mechanism.next_iteration()
-        self.frontier = next_frontier
+        newly_infected_nodes = self.infection_mechanism.next_iteration()
+        for node in newly_infected_nodes:
+            self.infect_node(node, 1-self.protection_list[node])
+        self.frontier = newly_infected_nodes
 
     # This is the method that should be used whenever you are attempting to
     # infect a node. It makes sure to track the history of infection.

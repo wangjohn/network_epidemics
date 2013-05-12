@@ -20,13 +20,19 @@ class InfectionMechanism:
 class BasicInfectionMechanism(InfectionMechanism):
     def next_iteration(self):
         new_infection_nodes = []
-        next_frontier = []
-        previously_infected = list(self.infection_object.infected_nodes)
         for i in self.infection_object.frontier:
-            infected = self.infection_object.infect_node(i,
-                    1-self.infection_object.graph.protection_list[i])
-            next_frontier.append(i) if infected
-        return next_frontier
+            for j in self.infection_object.graph.neighbors(i):
+                if (self._adjacent_to_infected(j) and
+                        j not in self.infection_object.seen_infection):
+                    new_infection_nodes.append(j)
+        return (new_infection_nodes)
+
+    def _adjacent_to_infected(self, node):
+        for i in xrange(self.infection_object.graph.num_nodes):
+            if (self.infection_object.graph.adjacency_matrix[node][i] == 1 and 
+                    self.infection_object.infected_nodes[i] == 1):
+                return True
+        return False
 
 class DynamicInfectionMechanism(InfectionMechanism):
 
@@ -35,6 +41,4 @@ class DynamicInfectionMechanism(InfectionMechanism):
         for i in self.infection_object.graph.infected_nodes:
             if i==0:
                 infected=self.infection_object.new_infect_node(i, self.infection_object.ATTACK_PROBABILITY)
-
-
 
