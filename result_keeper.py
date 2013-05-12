@@ -7,6 +7,7 @@ class ResultKeeper:
         self.results = []
         self.graphs_counter = collections.Counter()
         self.filename = filename
+        self.extra_information = []
 
     def row_headers(self, headers):
         self.headers = headers
@@ -14,6 +15,9 @@ class ResultKeeper:
     def append(self, result_list, graph = None):
         self.results.append(result_list)
         self.graphs_counter[graph] += 1
+
+    def add_extra_information(self, info):
+        self.extra_information.append(info)
 
     def averages_grouped_by(self, group):
         grouped_results = collections.defaultdict(list)
@@ -28,6 +32,8 @@ class ResultKeeper:
 
     def print_averages_grouped_by(self, group):
         grouped_averages = self.averages_grouped_by(group)
+        for info in self.extra_information:
+            self.print_out(info)
         self.print_out("Total Number of Trials: %s" % len(self.results))
         self.print_out("Total Number of Groups: %s" % len(grouped_averages))
         self.print_out("Total Number of Graphs: %s" % len(self.graphs_counter))
