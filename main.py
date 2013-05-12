@@ -5,7 +5,7 @@ import result_keeper
 
 class Settings:
     def __init__(self):
-        self.erdos_parameters_range = [(0.05, 100)]
+        self.erdos_parameters_range = [(0.15, 100)]
 
         self.num_trials_per_protection = 100
         self.num_graphs = 5
@@ -17,7 +17,7 @@ class Settings:
         self.filename = 'output'
 
         # Mechanism defaults
-        self.infection_mechanism = 'dynamic'
+        self.infection_mechanism = None
         self.protection_mechanism = None
 
 def compute_average_probability(settings, graph, result_history, num_trials = 250):

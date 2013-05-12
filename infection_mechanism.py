@@ -40,7 +40,8 @@ class DynamicInfectionMechanism(InfectionMechanism):
         new_infection_nodes = []
 
         # Randomly attack some fraction of nodes
-        self.perform_attack()
+        self.perform_node_changes(self.infection_object.attack_probability, infected = False)
+        self.perform_node_changes(self.infection_object.cure_probability, infected = True)
 
         for i in self.infection_object.frontier:
             for j in self.infection_object.graph.neighbors(i):
@@ -49,15 +50,17 @@ class DynamicInfectionMechanism(InfectionMechanism):
                     new_infection_nodes.append(j)
         return new_infection_nodes
 
-    def num_attack_nodes(self):
+    def num_nodes(self, probability):
         count = 0
         for i in xrange(self.infection_object.graph.num_nodes):
-            if random.random() < self.infection_object.attack_probability:
+            if random.random() < probability:
                 count += 1
         return count
 
-    def perform_attack(self):
+    # +infected = False+: corresponds to performing an attack
+    # +infected = True+: corresponds to performing a cure
+    def perform_node_changes(self, probability, infected = False):
         for i in random.sample(xrange(self.infection_object.graph.num_nodes),
-                self.num_attack_nodes()):
-            if self.infection_object.infected_nodes[i] == 0:
-                self.infection_object.perform_infection(i)
+                self.num_nodes(probability)):
+            if self.infection_object.infected_nodes[i] == infected:
+                self.infection_object.perform_infection(i, infected = infected)

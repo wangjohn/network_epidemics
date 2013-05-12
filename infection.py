@@ -13,8 +13,8 @@ class Infection:
     def __init__(self, graph, protection_list, history = False,
             infection_mechanism = None,
             protection_mechanism = None,
-            attack_probability = 0.1,
-            cure_probability = 0,
+            attack_probability = 0.0,
+            cure_probability = 0.0,
             debug = True):
         self.graph = graph
         self.protection_list = protection_list
@@ -62,27 +62,23 @@ class Infection:
 
     # This is the method that should be used whenever you are attempting to
     # infect a node. It makes sure to track the history of infection.
-    def infect_node(self, node, probability = False):
+    def infect_node(self, node, probability = None):
         if node not in self.seen_infection:
             self.perform_infection(node, probability)
 
-    # This method attempts to cure an infected node with some probability
-    def cure_node(self, node):
-        if self.infected_nodes[node] == 0:
-            return False
-        infected = True
-        if random.random() < self.cure_probability:
-            infected = False
-            self.infected_nodes[node] = 0
-        self._log_infection(node, infected)
-        return infected
+    # Performs either an infection or a cure (relying on the fact that booleans
+    # are just stored as integers). If +probability+ is not defined, then the
+    # probability defaults to the infection probability of the +node+. If
+    # +infected+ is not set, then this method defaults to performing an 
+    # infection instead of a cure.
+    def perform_infection(self, node, probability = None, infected = False):
+        if not probability:
+            probability = 1 - self.protection_list[node]
 
-    def perform_infection(self, node, probability = False):
-        if probability == 1 or random.random() < 1 - self.protection_list[node]:
-            infected = True
-            self.infected_nodes[node] = 1
-        else:
-            infected = False
+        if probability == 1 or random.random() < probability:
+            infected = not infected
+            self.infected_nodes[node] = infected
+
         self.seen_infection.add(node)
         self._log_infection(node, infected)
         return infected
