@@ -24,8 +24,8 @@ class ResultKeeper:
         return averages
 
     def print_averages_grouped_by(self, group, filename = None):
-        self.print_out(self.headers, filename)
-        format_string = "{:15s} " * len(self.headers)
+        self.print_out(("{:15s} " * len(self.headers)).format(self.headers), filename)
+        format_string = "{:15f} " * len(self.headers)
         for group_key, summary in self.averages_grouped_by(group).iteritems():
             string = format_string.format(*summary)
             self.print_out(string, filename)
