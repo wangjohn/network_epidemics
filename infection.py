@@ -51,7 +51,7 @@ class Infection:
 
         # Now start infecting with the infection mechanism
         newly_infected_nodes = self.infection_mechanism.next_iteration()
-        for node in newly_infected_nodes:
+        for node in set(newly_infected_nodes):
             self.infect_node(node, 1-self.protection_list[node])
         self.frontier = newly_infected_nodes
 
