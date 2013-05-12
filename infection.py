@@ -141,12 +141,12 @@ class ComputeInfectionProbabilities:
 
     def monte_carlo_compute_summary(self, num_trials):
         protection_list_sum = self.monte_carlo_compute(num_trials)
-        computed_probability = sum(protection_list_sum) / (num_trials * len(protection_list_sum))
-        estimated_std = self._compute_std(computed_probability)
+        computed_probability = float(sum(protection_list_sum)) / (num_trials * len(protection_list_sum))
+        estimated_std = self._compute_std(computed_probability, num_trials)
         return (computed_probability, estimated_std)
 
-    def _compute_std(computed_probability):
-        return (0.5 * computed_probability * (1 - computed_probability)) ** (0.5)
+    def _compute_std(self, computed_probability, num_trials):
+        return (0.5 * computed_probability * (1 - computed_probability) / num_trials) ** (0.5)
 
     def _initialize_infection_probabilities(self, initialize_neighbors = True):
         # Storage list for the probabilities of infection

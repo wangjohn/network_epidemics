@@ -15,7 +15,7 @@ def compute_average_probability(graph, protection_range, num_trials = 250):
         print protection_string.format(str(q), str(prob), str(std), str(1 - q - prob))
     return probabilities_hash
 
-def generate_and_test_graphs(erdos_parameters_range, protection_range, graph_generations = 5):
+def generate_and_test_graphs(erdos_parameters_range, protection_range, graph_generations = 1):
     for (prob, nodes) in erdos_parameters_range:
         er_generator = erdos_renyi.ErdosRenyi(prob, nodes)
         print "Erdos Renyi, p = %s, n = %s" % (prob, nodes)
