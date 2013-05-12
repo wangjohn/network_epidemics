@@ -13,7 +13,7 @@ class Infection:
     def __init__(self, graph, protection_list, history = False,
             infection_mechanism = None,
             protection_mechanism = None,
-            attack_probability = 0,
+            attack_probability = 0.1,
             cure_probability = 0,
             debug = True):
         self.graph = graph
@@ -31,7 +31,7 @@ class Infection:
         self._set_history(history)
         self.verbose = verbose.Verbose(debug)
 
-    def run_infection(self, start_node = "random", max_iterations = 5000):
+    def run_infection(self, start_node = "random", max_iterations = 200):
         self.start_infection(start_node)
         while len(self.frontier) >= 0 and self.current_iteration < max_iterations:
             self.next_iteration()
@@ -57,31 +57,14 @@ class Infection:
         # Now start infecting with the infection mechanism
         newly_infected_nodes = set(self.infection_mechanism.next_iteration())
         for node in newly_infected_nodes:
-            self.infect_node(node, 1 - self.protection_list[node])
+            self.infect_node(node)
         self.frontier = newly_infected_nodes
 
     # This is the method that should be used whenever you are attempting to
     # infect a node. It makes sure to track the history of infection.
-    def infect_node(self, node, probability = 1):
+    def infect_node(self, node, probability = False):
         if node not in self.seen_infection:
-            if probability == 1 or random.random() < probability:
-                infected = True
-                self.infected_nodes[node] = 1
-            else:
-                infected = False
-            self.seen_infection.add(node)
-            self._log_infection(node, infected)
-            return infected
-
-    # This method attempts to infect a node with some probability in the dynamic infection mechanism
-    def attack_node(self, node):
-        if random.random() < self.attack_probability * self.protection_list[node]:
-            infected = True
-            self.infected_nodes[node] = 1
-        else:
-            infected = False
-        self._log_infection(node,infected)
-        return infected
+            self.perform_infection(node, probability)
 
     # This method attempts to cure an infected node with some probability
     def cure_node(self, node):
@@ -91,10 +74,18 @@ class Infection:
         if random.random() < self.cure_probability:
             infected = False
             self.infected_nodes[node] = 0
-        self._log_infection(node,infected)
+        self._log_infection(node, infected)
         return infected
 
-
+    def perform_infection(self, node, probability = False):
+        if probability == 1 or random.random() < 1 - self.protection_list[node]:
+            infected = True
+            self.infected_nodes[node] = 1
+        else:
+            infected = False
+        self.seen_infection.add(node)
+        self._log_infection(node, infected)
+        return infected
 
     def _log_infection(self, node, infected = True):
         if self.history:
