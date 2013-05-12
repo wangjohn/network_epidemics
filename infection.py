@@ -14,6 +14,7 @@ class Infection:
             infection_mechanism = None,
             protection_mechanism = None,
             attack_probability = 0,
+            cure_probability = 0,
             debug = True):
         self.graph = graph
         self.protection_list = protection_list
@@ -21,10 +22,12 @@ class Infection:
         self.frontier = []
         self.seen_infection = sets.Set()
         self.infected_nodes = [0 for i in xrange(self.graph.num_nodes)]
-        self.attack_probability = attack_probability
+        
+        self.ATTACK_PROBABILITY = attack_probability
+        self.CURE_PROBABILITY = cure_probability
 
-        self._set_infection_mechanism(infection_mechanism)
-        self.protection_mechanism = protection_mechanism
+        self._set_infection_mechansim(infection_mechanism)
+        self._set_protection_mechanism(protection_mechanism)
         self._set_history(history)
         self.verbose = verbose.Verbose(debug)
 
@@ -54,7 +57,7 @@ class Infection:
         # Now start infecting with the infection mechanism
         newly_infected_nodes = set(self.infection_mechanism.next_iteration())
         for node in newly_infected_nodes:
-            self.infect_node(node, 1-self.protection_list[node])
+            self.infect_node(node, 1 - self.protection_list[node])
         self.frontier = newly_infected_nodes
 
     # This is the method that should be used whenever you are attempting to
@@ -71,15 +74,27 @@ class Infection:
             return infected
 
     # This method attempts to infect a node with some probability in the dynamic infection mechanism
-    def new_infect_node(self, node, probability=1):
-        if probability == 1 or random.random()<probability:
-            infected=True
-            self.infected_nodes[node]=1
+    def attack_node(self, node):
+        if random.random() < self.ATTACK_PROBABILITY * self.protection_list[node]:
+            infected = True
+            self.infected_nodes[node] = 1
         else:
-            infected=False
-        self.seen_infection.add(node)
+            infected = False
         self._log_infection(node,infected)
         return infected
+
+    # This method attempts to cure an infected node with some probability
+    def cure_node(self, node):
+        if self.infected_nodes[node] == 0:
+            return False
+        infected = True
+        if random.random() < self.CURE_PROBABILITY:
+            infected = False
+            self.infected_nodes[node] = 0
+        self._log_infection(node,infected)
+        return infected
+
+
 
     def _log_infection(self, node, infected = True):
         if self.history:
@@ -104,10 +119,15 @@ class Infection:
 
     # defaults to basic, unless specified to dynamic
     def _set_infection_mechanism(self, infection_mechanism):
-        if infection_mechanism=="dynamic":
-            self.infection_mechanism=DynamicInfectionMechanism(self)
+        if infection_mechanism == "dynamic":
+            self.infection_mechanism = DynamicInfectionMechanism(self)
         else:
             self.infection_mechanism = BasicInfectionMechanism(self)
+
+    # sets to protection mechanism if there is one
+    def _set_protection_mechanism(self, protection_mechanism):
+        if protection_mechanism == "dynamic":
+            self.protection_mechanism = DynamicProtectionMechanism(self)
 
 class ComputeInfectionProbabilities:
     def __init__(self, graph, protection_list, start_node,

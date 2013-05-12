@@ -17,28 +17,35 @@ class InfectionMechanism:
     def next_iteration(self):
         raise "Not Implemented"
 
+    def adjacent_to_infected(self, node):
+    for i in xrange(self.infection_object.graph.num_nodes):
+        if (self.infection_object.graph.adjacency_matrix[node][i] == 1 and 
+                self.infection_object.infected_nodes[i] == 1):
+            return True
+    return False
+
 class BasicInfectionMechanism(InfectionMechanism):
     def next_iteration(self):
         new_infection_nodes = []
         for i in self.infection_object.frontier:
             for j in self.infection_object.graph.neighbors(i):
-                if (self._adjacent_to_infected(j) and
+                if (self.adjacent_to_infected(j) and
                         j not in self.infection_object.seen_infection):
                     new_infection_nodes.append(j)
         return new_infection_nodes
 
-    def _adjacent_to_infected(self, node):
-        for i in xrange(self.infection_object.graph.num_nodes):
-            if (self.infection_object.graph.adjacency_matrix[node][i] == 1 and 
-                    self.infection_object.infected_nodes[i] == 1):
-                return True
-        return False
+    
 
 class DynamicInfectionMechanism(InfectionMechanism):
 
     def next_interation(self):
-
-        for i in self.infection_object.graph.infected_nodes:
-            if i==0:
-                infected=self.infection_object.new_infect_node(i, self.infection_object.ATTACK_PROBABILITY)
+        new_infection_nodes = []
+        for i in self.infection_object.infected_nodes:
+            if i == 0:
+                infected = self.infection_object.attack_node(i)
+        for i in self.infection_object.infected_nodes:
+            for j in self.infection_object.graph.neighbors(i):
+                if self.adjacent_to_infected(j) and self.infection_object.infected_nodes[j] == 0:
+                    new_infection_nodes.append(j)
+        return (new_infection_nodes)
 
