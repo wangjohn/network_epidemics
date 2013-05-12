@@ -46,8 +46,10 @@ class Infection:
             self.history.change_protection(self.graph.protection_list)
 
         # Now start infecting with the infection mechanism
-        next_frontier = self.infection_mechanism.next_iteration()
-        self.frontier = next_frontier
+        newly_infected_nodes = self.infection_mechanism.next_iteration()
+        for node in newly_infected_nodes:
+            self.infect_node(node, 1-self.graph.protection_list[node])
+        self.frontier = newly_infected_nodes
 
     # This is the method that should be used whenever you are attempting to
     # infect a node. It makes sure to track the history of infection.
