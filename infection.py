@@ -28,9 +28,9 @@ class Infection:
         self._set_history(history)
         self.verbose = verbose.Verbose(debug)
 
-    def run_infection(self, start_node = "random"):
+    def run_infection(self, start_node = "random", max_iterations = 5000):
         self.start_infection(start_node)
-        while len(self.frontier) >= 0:
+        while len(self.frontier) >= 0 and self.current_iteration < max_iterations:
             self.next_iteration()
 
     def start_infection(self, start_node = "random"):
@@ -52,9 +52,8 @@ class Infection:
             self.history.change_protection(self.protection_list)
 
         # Now start infecting with the infection mechanism
-        newly_infected_nodes = self.infection_mechanism.next_iteration()
-        self.verbose.p("Infected nodes: ", newly_infected_nodes)
-        for node in set(newly_infected_nodes):
+        newly_infected_nodes = set(self.infection_mechanism.next_iteration())
+        for node in newly_infected_nodes:
             self.infect_node(node, 1-self.protection_list[node])
         self.frontier = newly_infected_nodes
 
@@ -136,8 +135,7 @@ class ComputeInfectionProbabilities:
                     infection_mechanism = self.infection_mechanism,
                     protection_mechanism = self.protection_mechanism)
             infection_object.run_infection(self.start_node)
-            infection_object.protection_list
-            protection_list_sum = [sum(a) for a in zip(protection_list_sum, infection_object.protection_list)]
+            protection_list_sum = [sum(a) for a in zip(protection_list_sum, infection_object.infected_nodes)]
 
         return [float(i) / num_trials for i in protection_list_sum]
 
