@@ -10,9 +10,10 @@ from infection_mechanism import *
 # the infection.
 class Infection:
 
+
     def __init__(self, graph, protection_list, history = False,
             infection_mechanism = None,
-            protection_mechanism = None
+            protection_mechanism = None,
             attack_probability = 0):
         self.graph = graph
         self.protection_list = protection_list
@@ -20,9 +21,9 @@ class Infection:
         self.frontier = []
         self.seen_infection = sets.Set()
         self.infected_nodes = [0 for i in xrange(self.graph.num_nodes)]
-        self.ATTACK_PROBABILITY=attack_probability
+        self.attack_probability = attack_probability
 
-        self._set_infection_mechansim(infection_mechanism)
+        self._set_infection_mechanism(infection_mechanism)
         self.protection_mechanism = protection_mechanism
         self._set_history(history)
 
@@ -131,7 +132,7 @@ class ComputeInfectionProbabilities:
 
         for i in xrange(num_trials):
             infection_object = Infection(self.graph, self.protection_list,
-                    infection_mechansim = self.infection_mechanism,
+                    infection_mechanism = self.infection_mechanism,
                     protection_mechanism = self.protection_mechanism)
             infection_object.run_infection(self.start_node)
             infection_object.protection_list

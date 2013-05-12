@@ -1,4 +1,5 @@
 import graph
+import random
 
 # Class for creating an Erdos Renyi adjacency matrix. Usage is as follows:
 #
@@ -20,8 +21,8 @@ class ErdosRenyi:
 
     def draw_adjacency_matrix(self):
         adjacency_matrix = graph.AdjacencyMatrix(self.num_nodes)
-        for i in xrange(num_nodes):
-            for j in xrange(num_nodes):
+        for i in xrange(self.num_nodes):
+            for j in xrange(self.num_nodes):
                 if i <= j and random.random() < self.p:
                     adjacency_matrix.set_edge(i, j)
 

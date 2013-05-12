@@ -7,28 +7,30 @@ class Graph:
         self._check_matching_sizes()
 
     def neighbors(self, node):
-        return [i for i in xrange(len(self.num_nodes)) if self.adjacency_matrix[node][i] == 1]
+        return [i for i in xrange(self.num_nodes) if self.adjacency_matrix[node][i] == 1]
 
     # This method checks to make sure that all of the sizes that are defined
     # in the graph are matching. Note that it doesn't do a full check, but it
     # only checks the outside of the matrix.
     def _check_matching_sizes(self):
-        if (len(self.adjacency_matrix) != self.num_nodes)
+        if (len(self.adjacency_matrix) != self.num_nodes):
             raise Exception("Adjacency matrix is not the correct size")
-
-class AdjacencyMatrix(Matrix):
-    def set_edge(self, node_1, node_2, value = 1):
-        super(Matrix, self).set_edge(node_1, node_2, value)
 
 # Base implementation of the a matrix. You can set the neighbors of a particular
 # node, or the edge between two nodes.
 #
 # Nodes are represented as integers, and num_nodes provides the number of nodes
 # that are in the matrix.
-class Matrix:
+class AdjacencyMatrix:
     def __init__(self, num_nodes):
         self.num_nodes = num_nodes
         self.matrix = [[0 for i in xrange(num_nodes)] for j in xrange(num_nodes)]
+
+    def __len__(self):
+        return self.num_nodes
+
+    def __getitem__(self, k):
+        return self.matrix[k]
 
     def set_neighbors(self, node, neighbor_list):
         self._check_length(neighbor_list)
@@ -38,7 +40,7 @@ class Matrix:
         for i in xrange(len(neighbor_list)):
             self.matrix[i] = neighbor_list[i]
 
-    def set_edge(self, node_1, node_2, value):
+    def set_edge(self, node_1, node_2, value = 1):
         self.matrix[node_1][node_2] = value
         self.matrix[node_2][node_1] = value
 
