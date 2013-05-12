@@ -28,5 +28,13 @@ class BasicInfectionMechanism(InfectionMechanism):
             next_frontier.append(i) if infected
         return next_frontier
 
+class DynamicInfectionMechanism(InfectionMechanism):
+
+    def next_interation(self):
+
+        for i in self.infection_object.graph.infected_nodes:
+            if i==0:
+                infected=self.infection_object.new_infect_node(i, self.infection_object.ATTACK_PROBABILITY)
+
 
 
