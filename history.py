@@ -40,7 +40,7 @@ class InfectionLog:
 
     def configure_payload(self, infection_object):
         if infection_object:
-            self.payload["protection"] = infection_object.graph.protection_list[node]
+            self.payload["protection"] = infection_object.protection_list[node]
             self.payload["neighbors_infected"] = self._get_infected_neighbors(infection_object)
 
     def _get_infected_neighbors(self, infection_object):

@@ -1,8 +1,7 @@
 class Graph:
-    def __init__(self, adjacency_matrix, protection_list):
+    def __init__(self, adjacency_matrix):
         self.num_nodes = adjacency_matrix.num_nodes
         self.adjacency_matrix = adjacency_matrix
-        self.protection_list = protection_list
 
         # Check to make sure the matrices are the right dimensions
         self._check_matching_sizes()
@@ -14,9 +13,8 @@ class Graph:
     # in the graph are matching. Note that it doesn't do a full check, but it
     # only checks the outside of the matrix.
     def _check_matching_sizes(self):
-        if (len(self.adjacency_matrix) != self.num_nodes or
-            len(self.protection_list) != self.num_nodes):
-            raise Exception("Adjacency and Protection matrix are not the same size")
+        if (len(self.adjacency_matrix) != self.num_nodes)
+            raise Exception("Adjacency matrix is not the correct size")
 
 class AdjacencyMatrix(Matrix):
     def set_edge(self, node_1, node_2, value = 1):
