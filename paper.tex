@@ -1,0 +1,23 @@
+
+\section{Simulation Results}
+
+In this section, we provide results from computational simulations of our model. The graphs that we simulate on are created using the Erdos-Renyi mechanism with the number of nodes fixed at $n = 100$. Fixing the number of nodes reduces the number of parameters that can vary.
+
+\subsection{Non-Dynamic Model}
+
+To begin, we present results from simulating the non-dynamic model. In this case, each individual chooses his protection $q \in [0,1)$ before the game begins and is not allowed to change his choice as the game proceeds. The individual is not given any idea of what his position in the graph will be, but he does know the probability of edge creation $p$.
+
+Solving for a mixed strategy Nash Equilibrium in this context is $PPAD$ complete.\footnote{http://www.cs.berkeley.edu/~christos/papers/cacmDGP-2.pdf} This implies that for all practical purposes, solving for a Nash Equilibrium is computationally intractable, although little is known about the actual complexity of $PPAD$ in relation to $P$ and $NP$.\footnote{http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=4031362} 
+
+Because we cannot compute the equilibrium vector of protections $\bar{q}$ where $q_i \in [0,1)$ is player $i$'s choice of protection, we can sweep along a grid of representative values for $\bar{q}$ and examine the game at each one of these values.
+
+Fortunately, this game is symmetric for each player and Acemoglu et al (2013) have shown that under such situations, the Nash Equilibrium for each player is to play the same protection $q$. Therefore it suffices to check setting $q_i = q_j$ for each player $i \neq j$ in our simulations. We shall call $q = q_i$ the protection that each player chooses.
+
+To examine the outcome of a contagion spreading on an Erdos Renyi graph with edge probability $p$, $n = 100$, and protection rate $q$ for each participant, we must be able to compute $\tilde{P}_i(A, q_{-i}, \Phi)$, the probability that the infection reaches $i$ (i.e. the probability that any one of $i$'s neighbors gets infected).
+
+Unfortunately, computing $\tilde{P}_i(A, q_{-i}, \Phi)$ in general for a graph which is not a tree is in $\# P$, which is as least as hard as $NP$. This makes computing $\tilde{P}$ computationally intractable.
+
+\begin{theorem}
+  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is in $\# P$.
+\end{theorem}
+

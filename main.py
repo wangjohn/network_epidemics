@@ -5,7 +5,7 @@ import result_keeper
 
 class Settings:
     def __init__(self):
-        self.erdos_parameters_range = [(0.01, 100)]
+        self.erdos_parameters_range = [(0.05, 100)]
 
         self.num_trials_per_protection = 250
         self.num_graphs = 1

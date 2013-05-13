@@ -45,7 +45,8 @@ class ResultKeeper:
 
         self.print_out(("{:15s} " * len(self.headers)).format(*self.headers))
         format_string = "{:15f} " * len(self.headers)
-        for group_key, summary in grouped_averages.iteritems():
+        for group_key in sorted(grouped_averages):
+            summary = grouped_averages[group_key]
             self.print_out(format_string.format(*summary))
 
     def print_out(self, string):
