@@ -15,9 +15,33 @@ Fortunately, this game is symmetric for each player and Acemoglu et al (2013) ha
 
 To examine the outcome of a contagion spreading on an Erdos Renyi graph with edge probability $p$, $n = 100$, and protection rate $q$ for each participant, we must be able to compute $\tilde{P}_i(A, q_{-i}, \Phi)$, the probability that the infection reaches $i$ (i.e. the probability that any one of $i$'s neighbors gets infected).
 
+\subsection{Computational Intractibility of $\tilde{P}_i$}
+
 Unfortunately, computing $\tilde{P}_i(A, q_{-i}, \Phi)$ in general for a graph which is not a tree is in $\# P$, which is as least as hard as $NP$. This makes computing $\tilde{P}$ computationally intractable.
 
+The reduction can be seen by introducing a known $\# P$ problem called the Two Terminal Problem.
+
+\begin{definition}
+  Let us define a graph $G = (V, E)$ with some probability labelling $Pr: E \to [0,1] \cap \mathrm{Q}$. Let $u \in V$ be a source terminal and $v \in V \setminus \{u\}$ be a target terminal. An instance of the \emph{Two Terminal Problem} is to compute $Pr(v | u)$, the probability that there exists a path to node $v$ from node $u$.
+\end{definition}
+
+Note that in the Two Terminal Problem, each edge $e \in E$ has some probability of failure $p_e \in [0,1]$ as defined by the function $Pr$.
+
+Showing the difficulty of the computation of $\tilde{P}_i$ in the non-dynamic model is now as simple as showing a reduction of the Two Terminal Problem, since it is $\# P$ complete as shown by Ball (1980).\footnote{http://onlinelibrary.wiley.com/doi/10.1002/net.3230100206/pdf}
+
 \begin{theorem}
-  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is in $\# P$.
+  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard.
 \end{theorem}
+\begin{proof}
+  We shall show that every instance of the Two Terminal Problem is an instance of the Epidemic Probability Problem (what we shall call the problem of computing $\tilde{P}_i$ in our model).
+
+  Suppose we have an instance $\pi_{ttp}$ of the Two Terminal Problem. We can find a solution as follows:
+  \begin{itemize}
+    \item Create an instance $\pi_{epp}$ of the Epidemic Probability Problem using graph $G$ from $\pi_{ttp}$.
+    \item Set the protection rates $q_e \in [0,1)$ for each edge $e \in E$ for the Epidemic Probability Problem as $1 - Pr(e)$, where $Pr(e)$ is the loss probability for edge $e$ in the Two Terminal Problem.
+    \item Solve the Epidemic Probability Problem. The probability $\tilde{P}_v$ for a given source of infection $u$ will be the solution to the Two Terminal Problem.
+  \end{itemize}
+
+  Thus, we have shown that the Two Terminal Terminal problem can be reduced in polynomial time to the Epidemic Probability Problem, which shows that the Epidemic Probability Problem is at least as hard as the Two Terminal Problem (which is $\sharp P$ hard).
+\end{proof}
 
