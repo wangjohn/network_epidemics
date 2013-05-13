@@ -13,7 +13,17 @@ Because we cannot compute the equilibrium vector of protections $\bar{q}$ where 
 
 Fortunately, this game is symmetric for each player and Acemoglu et al (2013) have shown that under such situations, the Nash Equilibrium for each player is to play the same protection $q$. Therefore it suffices to check setting $q_i = q_j$ for each player $i \neq j$ in our simulations. We shall call $q = q_i$ the protection that each player chooses.
 
-To examine the outcome of a contagion spreading on an Erdos Renyi graph with edge probability $p$, $n = 100$, and protection rate $q$ for each participant, we must be able to compute $\tilde{P}_i(A, q_{-i}, \Phi)$, the probability that the infection reaches $i$ (i.e. the probability that any one of $i$'s neighbors gets infected).
+To examine the outcome of a contagion spreading on an Erdos Renyi graph with edge probability $p$, $n = 100$, and protection rate $q$ for each participant, we must be able to compute $\tilde{P}_i(A, q_{-i}, \Phi)$, the probability that the infection reaches $i$ (i.e. the probability that any one of $i$'s neighbors gets infected). However, since computing $\tilde{P}_i$ is NP-hard, we instead use Monte Carlo simulations to approximate $\tilde{P}_i$. We do so in the following manner:
+
+\begin{itemize}
+  \item Generate $\kappa$ Erdos Renyi graphs with parameters $G(n, p)$.
+  \item For each graph instance and protection value $q$, we run the following for $\gamma$ trials: choose a random node to infect and run the infection to completion.
+  \item Compute $\hat{P}$, an estimate of $\tilde{P}_i$ for all $i$, as the total number of infected nodes after $\gamma$ trials divided by the total number of nodes. For $n = 100$, if we let $I_j$ be the number of infected nodes on the $j$th trial, we have:
+    \begin{eqnarray}
+      \hat{P} = \frac{1}{n \gamma} \sum_{j=1}^{\gamma} I_j
+    \end{eqnarray}
+  \item Compute the standard deviation of $\hat{P}$ by using standard techniques of computing standard deviations for a sample of random variables from a binomial distribution.
+\end{itemize}
 
 \subsection{Computational Intractibility of $\tilde{P}_i$}
 
@@ -30,7 +40,7 @@ Note that in the Two Terminal Problem, each edge $e \in E$ has some probability 
 Showing the difficulty of the computation of $\tilde{P}_i$ in the non-dynamic model is now as simple as showing a reduction of the Two Terminal Problem, since it is $\# P$ complete as shown by Ball (1980).\footnote{http://onlinelibrary.wiley.com/doi/10.1002/net.3230100206/pdf}
 
 \begin{theorem}
-  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard.
+  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard in the non-dynamic model.
 \end{theorem}
 \begin{proof}
   We shall show that every instance of the Two Terminal Problem is an instance of the Epidemic Probability Problem (what we shall call the problem of computing $\tilde{P}_i$ in our model).
@@ -42,6 +52,33 @@ Showing the difficulty of the computation of $\tilde{P}_i$ in the non-dynamic mo
     \item Solve the Epidemic Probability Problem. The probability $\tilde{P}_v$ for a given source of infection $u$ will be the solution to the Two Terminal Problem.
   \end{itemize}
 
-  Thus, we have shown that the Two Terminal Terminal problem can be reduced in polynomial time to the Epidemic Probability Problem, which shows that the Epidemic Probability Problem is at least as hard as the Two Terminal Problem (which is $\sharp P$ hard).
+  Thus, we have shown that the Two Terminal Terminal problem can be reduced in polynomial time to the Epidemic Probability Problem, which shows that the Epidemic Probability Problem is at least as hard as the Two Terminal Problem (which is $\# P$ hard).
 \end{proof}
+
+The complexity result can be extended to the dynamic case when the protection for each node potentially changes. This means that for both the non-dynamic and the dynamic model, the computation of $\tilde{P}_i$ is computationally intractable.
+
+\begin{corollary}
+  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard is the dynamic model with changes in protection in each time step.
+\end{corollary}
+\begin{proof}
+  We can reduce the Two Terminal Problem to the Dynamic Epidemic Probability Problem, where the probabilities are fixed to represent $Pr$ from the Two Terminal Problem. Using the same derivation as before, we can show that the dynamic version of the Epidemic Probability Problem is $\# P$ hard.
+\end{proof}
+
+\subsection{Computationally Intractable Problems}
+
+There are a number of related problems which are computationally hard. Actually, most interesting quantities related to the epidemic problem are NP-hard to compute. For example, computing the expected number of infected nodes is NP-hard.
+
+\begin{theorem}
+  Computing the expected number of infected nodes on the an epidemic network with protections $q_i$ for $i \in \{1, \ldots, n\}$ is $\# P$ hard.
+\end{theorem}
+\begin{proof}
+  We shall reduce the Epidemic Probability Problem to the Epidemic Expected Infection Problem (the problem of computing the expected number of infected nodes in an epidemic network).
+
+  Suppose we have an instance of the Epidemic Probability Problem. Now select a node $u \in V$ and create a new node $v \not \in V$ which will be attached to the graph. Now, create an edge $e(u,v)$ between $u$ and $v$ and set $v$'s protection to $q = 0$. Now, if $u$ is ever infected, then $v$ will also be infected.
+
+  It is clear that the expected number of infected nodes in this new graph increases by $P_i(u)$, the probability of $u$ becoming infected. Thus, finding the expected number of infected nodes is at least as hard as finding the probability of infection of a node. Thus, we see that the Epidemic Expected Infection Problem is harder than the Epidemic Probability Problem, which is in $\# P$.
+\end{proof}
+
+\subsection{Computational Intractability of Computing Adversary's Target}
+
 
