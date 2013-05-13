@@ -27,9 +27,9 @@ class DynamicProtectionMechanism(ProtectionMechanism):
         infection_probability = 1
         for i in neighbors:
             if self.infection_object.infected_nodes[i] == 0:
-                infection_probability *= (1 - self.infection_object.ATTACK_PROBABILITY)
+                infection_probability *= (1 - self.infection_object.attack_probability)
             else:
-                infection_probability *= (self.infection_object.CURE_PROBABILITY)
-        infection_probability *= (1 - self.infection_object.ATTACK_PROBABILITY)
+                infection_probability *= (self.infection_object.cure_probability)
+        infection_probability *= (1 - self.infection_object.attack_probability)
         return (1 - infection_probability) * (1 - protection)
 

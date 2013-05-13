@@ -18,11 +18,11 @@ class InfectionMechanism:
         raise "Not Implemented"
 
     def adjacent_to_infected(self, node):
-    for i in xrange(self.infection_object.graph.num_nodes):
-        if (self.infection_object.graph.adjacency_matrix[node][i] == 1 and 
-                self.infection_object.infected_nodes[i] == 1):
-            return True
-    return False
+        for i in xrange(self.infection_object.graph.num_nodes):
+            if (self.infection_object.graph.adjacency_matrix[node][i] == 1 and 
+                    self.infection_object.infected_nodes[i] == 1):
+                return True
+        return False
 
 class BasicInfectionMechanism(InfectionMechanism):
     def next_iteration(self):
@@ -33,8 +33,6 @@ class BasicInfectionMechanism(InfectionMechanism):
                         j not in self.infection_object.seen_infection):
                     new_infection_nodes.append(j)
         return new_infection_nodes
-
-    
 
 class DynamicInfectionMechanism(InfectionMechanism):
 

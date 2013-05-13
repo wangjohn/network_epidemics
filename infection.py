@@ -23,10 +23,10 @@ class Infection:
         self.seen_infection = sets.Set()
         self.infected_nodes = [0 for i in xrange(self.graph.num_nodes)]
         
-        self.ATTACK_PROBABILITY = attack_probability
-        self.CURE_PROBABILITY = cure_probability
+        self.attack_probability = attack_probability
+        self.cure_probability = cure_probability
 
-        self._set_infection_mechansim(infection_mechanism)
+        self._set_infection_mechanism(infection_mechanism)
         self._set_protection_mechanism(protection_mechanism)
         self._set_history(history)
         self.verbose = verbose.Verbose(debug)
@@ -75,7 +75,7 @@ class Infection:
 
     # This method attempts to infect a node with some probability in the dynamic infection mechanism
     def attack_node(self, node):
-        if random.random() < self.ATTACK_PROBABILITY * self.protection_list[node]:
+        if random.random() < self.attack_probability * self.protection_list[node]:
             infected = True
             self.infected_nodes[node] = 1
         else:
@@ -88,7 +88,7 @@ class Infection:
         if self.infected_nodes[node] == 0:
             return False
         infected = True
-        if random.random() < self.CURE_PROBABILITY:
+        if random.random() < self.cure_probability:
             infected = False
             self.infected_nodes[node] = 0
         self._log_infection(node,infected)
@@ -128,6 +128,8 @@ class Infection:
     def _set_protection_mechanism(self, protection_mechanism):
         if protection_mechanism == "dynamic":
             self.protection_mechanism = DynamicProtectionMechanism(self)
+        else:
+            self.protection_mechanism = None
 
 class ComputeInfectionProbabilities:
     def __init__(self, graph, protection_list, start_node,
@@ -161,12 +163,12 @@ class ComputeInfectionProbabilities:
 
     def monte_carlo_compute_summary(self, num_trials):
         protection_list_sum = self.monte_carlo_compute(num_trials)
-        computed_probability = sum(protection_list_sum) / (num_trials * len(protection_list_sum))
-        estimated_std = self._compute_std(computed_probability)
+        computed_probability = float(sum(protection_list_sum)) / (num_trials * len(protection_list_sum))
+        estimated_std = self._compute_std(computed_probability, num_trials)
         return (computed_probability, estimated_std)
 
-    def _compute_std(computed_probability):
-        return (0.5 * computed_probability * (1 - computed_probability)) ** (0.5)
+    def _compute_std(self, computed_probability, num_trials):
+        return (0.5 * computed_probability * (1 - computed_probability) / num_trials) ** (0.5)
 
     def _initialize_infection_probabilities(self, initialize_neighbors = True):
         # Storage list for the probabilities of infection
