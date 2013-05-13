@@ -40,6 +40,8 @@ class ResultKeeper:
         self.print_out("Total Number of Graphs: %s" % len(self.graphs_counter))
         self.print_out("Attack Probability: %s" % self.settings.attack_probability)
         self.print_out("Cure Probability: %s" % self.settings.cure_probability)
+        self.print_out("Infection Mechanism: %s" % self.settings.infection_mechanism)
+        self.print_out("Protection Mechanism: %s" % self.settings.protection_mechanism)
 
         self.print_out(("{:15s} " * len(self.headers)).format(*self.headers))
         format_string = "{:15f} " * len(self.headers)

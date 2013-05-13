@@ -121,13 +121,17 @@ class Infection:
 class ComputeInfectionProbabilities:
     def __init__(self, graph, protection_list, start_node,
             infection_mechanism = None,
-            protection_mechanism = None):
+            protection_mechanism = None,
+            attack_probability = 0.0,
+            cure_probability = 0.0):
         self.graph = graph
         self.protection_list = protection_list
         self.start_node = start_node
 
         self.infection_mechanism = infection_mechanism
         self.protection_mechanism = protection_mechanism
+        self.attack_probability = attack_probability
+        self.cure_probability = cure_probability
 
         # Storage list for the probabilities of infection
         self.infection_probabilities = [None for i in xrange(self.graph.num_nodes)]
@@ -142,7 +146,9 @@ class ComputeInfectionProbabilities:
         for i in xrange(num_trials):
             infection_object = Infection(self.graph, self.protection_list,
                     infection_mechanism = self.infection_mechanism,
-                    protection_mechanism = self.protection_mechanism)
+                    protection_mechanism = self.protection_mechanism,
+                    attack_probability = self.attack_probability,
+                    cure_probability = self.cure_probability)
             infection_object.run_infection(self.start_node)
             protection_list_sum = [sum(a) for a in zip(protection_list_sum, infection_object.infected_nodes)]
 
