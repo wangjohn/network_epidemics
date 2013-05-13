@@ -1,7 +1,8 @@
 import collections
 
 class ResultKeeper:
-    def __init__(self, graph_generator, headers = None, filename = None):
+    def __init__(self, settings, graph_generator, headers = None, filename = None):
+        self.settings = settings
         self.graph_generator = graph_generator
         self.headers = headers
         self.results = []
@@ -37,6 +38,8 @@ class ResultKeeper:
         self.print_out("Total Number of Trials: %s" % len(self.results))
         self.print_out("Total Number of Groups: %s" % len(grouped_averages))
         self.print_out("Total Number of Graphs: %s" % len(self.graphs_counter))
+        self.print_out("Attack Probability: %s" % self.settings.attack_probability)
+        self.print_out("Cure Probability: %s" % self.settings.cure_probability)
 
         self.print_out(("{:15s} " * len(self.headers)).format(*self.headers))
         format_string = "{:15f} " * len(self.headers)

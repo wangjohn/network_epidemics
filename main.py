@@ -5,14 +5,17 @@ import result_keeper
 
 class Settings:
     def __init__(self):
-        self.erdos_parameters_range = [(0.15, 100)]
+        self.erdos_parameters_range = [(0.005, 100)]
 
         self.num_trials_per_protection = 100
-        self.num_graphs = 5
+        self.num_graphs = 100
 
         self.protection_range = [float(i)/100 for i in xrange(5, 100, 5)]
         self.protection_string = "{:15s} {:15s} {:15s} {:15s}"
         self.headers = ["Protection", "Probability", "Standard Dev", "Network Effect"]
+
+        self.attack_probability = 0.01
+        self.cure_probability = 0.01
 
         self.filename = 'output'
 
@@ -27,7 +30,9 @@ def compute_average_probability(settings, graph, result_history, num_trials = 25
         compute_probabilities_object = infection.ComputeInfectionProbabilities(
                 graph, protection_list, 0,
                 infection_mechanism = settings.infection_mechanism,
-                protection_mechanism = settings.protection_mechanism)
+                protection_mechanism = settings.protection_mechanism,
+                attack_probability = settings.attack_probability,
+                cure_probability = settings.cure_probability)
 
         prob, std = compute_probabilities_object.monte_carlo_compute_summary(settings.num_trials_per_protection)
         result_history.append([q, prob, std, 1-q-prob], graph)
@@ -36,7 +41,7 @@ def compute_average_probability(settings, graph, result_history, num_trials = 25
 def generate_and_test_graphs(settings):
     for (prob, nodes) in settings.erdos_parameters_range:
         er_generator = erdos_renyi.ErdosRenyi(prob, nodes)
-        result_history = result_keeper.ResultKeeper(er_generator, settings.headers, settings.filename)
+        result_history = result_keeper.ResultKeeper(settings, er_generator, settings.headers, settings.filename)
 
         graph_generation_info = "Erdos Renyi, p = %s, n = %s" % (prob, nodes)
         result_history.add_extra_information(graph_generation_info)
