@@ -1,3 +1,4 @@
+import random
 
 # Note that infection mechanisms do not mutate the underlying +infection_object+,
 # they merely return information that allows the +infection_object+ to actually
@@ -35,15 +36,31 @@ class BasicInfectionMechanism(InfectionMechanism):
         return new_infection_nodes
 
 class DynamicInfectionMechanism(InfectionMechanism):
-
     def next_iteration(self):
         new_infection_nodes = []
-        for i in self.infection_object.infected_nodes:
-            if i == 0:
-                infected = self.infection_object.attack_node(i)
-        for i in self.infection_object.infected_nodes:
-            for j in self.infection_object.graph.neighbors(i):
-                if self.adjacent_to_infected(j) and self.infection_object.infected_nodes[j] == 0:
-                    new_infection_nodes.append(j)
-        return (new_infection_nodes)
 
+        # Randomly attack some fraction of nodes
+        self.perform_node_changes(self.infection_object.attack_probability, infected = False)
+        self.perform_node_changes(self.infection_object.cure_probability, infected = True)
+
+        for i in self.infection_object.frontier:
+            for j in self.infection_object.graph.neighbors(i):
+                if (self.adjacent_to_infected(j) and 
+                        self.infection_object.infected_nodes[j] == 0):
+                    new_infection_nodes.append(j)
+        return new_infection_nodes
+
+    def num_nodes(self, probability):
+        count = 0
+        for i in xrange(self.infection_object.graph.num_nodes):
+            if random.random() < probability:
+                count += 1
+        return count
+
+    # +infected = False+: corresponds to performing an attack
+    # +infected = True+: corresponds to performing a cure
+    def perform_node_changes(self, probability, infected = False):
+        for i in random.sample(xrange(self.infection_object.graph.num_nodes),
+                self.num_nodes(probability)):
+            if self.infection_object.infected_nodes[i] == infected:
+                self.infection_object.perform_infection(i, infected = infected)
