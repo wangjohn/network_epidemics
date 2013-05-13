@@ -38,7 +38,7 @@ class BasicInfectionMechanism(InfectionMechanism):
 
 class DynamicInfectionMechanism(InfectionMechanism):
 
-    def next_interation(self):
+    def next_iteration(self):
         new_infection_nodes = []
         for i in self.infection_object.infected_nodes:
             if i == 0:
