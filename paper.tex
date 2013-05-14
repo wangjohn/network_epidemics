@@ -1,3 +1,22 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[margin=1.25in]{geometry}
+
+\theoremstyle{plain}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+\title{Security on Networks}
+\date{\today}
+\author{Bonny Jain, John Wang, Iris Xu}
+
+\begin{document}
+
+  \maketitle
 
 \section{Simulation Results}
 
@@ -49,6 +68,8 @@ However, you must have enough connections in order for this network effect to be
 \begin{eqnarray}
  \nu = 1 - q - \hat{P}
 \end{eqnarray}
+
+The network effect starts to increase to something significant by $q = 0.5$, then falls off again after $q = 0.8$. The fall off in the network effect comes from the saturation of protection levels. After a certain point, the marginal benefit of extra protection starts to decrease because of the difficulty of actually spreading the infection.
 
 \begin{figure}
   \caption{Network Effect in a Giant Component ($np = 5$)}
@@ -108,3 +129,4 @@ There are a number of related problems which are computationally hard. Actually,
   It is clear that the expected number of infected nodes in this new graph increases by $P_i(u)$, the probability of $u$ becoming infected. Thus, finding the expected number of infected nodes is at least as hard as finding the probability of infection of a node. Thus, we see that the Epidemic Expected Infection Problem is harder than the Epidemic Probability Problem, which is in $\# P$.
 \end{proof}
 
+\end{document}
