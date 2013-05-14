@@ -158,7 +158,16 @@ First we define the problem of computing infection probabilities for multiple so
 
 \subsection{Summary of Karger's FPTAS for the All Terminal Problem}
 
-Karger solves the all terminal problem using a reduction to D 
+Karger solves the all terminal problem using a combination of a minimum cut finding algorithm and the Monte Carlo scheme. If $\tilde{P}_i$ is large, then it is sufficient to use the Monte Carlo algorithm because of the time bound of $O(\log n / (\epsilon^2 \tilde{P}))$. However, when $\tilde{P}$ is small and arbitrarily close to zero, the Monte Carlo simulation requires a prohibitive number of trials. Therefore, Karger develops another polynomial time algorithm which can be used when $\tilde{P} < 1/n^4$. When this is the case, we can find cuts that are small enough, and these cuts will provide an easy way to estimate the probability of failure.
+
+To make this argument more rigorous, we shall develop the theory more formally. Notice that graphs become disconnected exactly when all the edges in a cut fail. Thus, it is clear that if each edge $i$ in a cut fails with probability $q_i$, then the cut will fail with probability $\prod_i q_i$. Karger proves the following useful lemma.
+
+\begin{lemma}
+  Suppose $c$ is the weight of the minimum cut and an $\alpha$-minimum cut is any cut with weight less than or equal to $\alpha c$, then there are at most $n^{\alpha c}$ $\alpha$-minimum cuts.
+\end{lemma}
+
+Karger (1999) also shows that when the probability of the minimum cut failing is small, then we only need to determine the probability that a cut of value close to $c$ fails. The paper proceeds to show that it is sufficient to find the all $\alpha$-minimum cuts, of which there are $O(n^{\alpha c})$ using Karger's Recursive Contraction Algorithm. This produces a set of near minimum cuts, from which we can then compute the loss probability
+Now suppose that $c$ is the weight of the minimum cut. Karger proves the fo
 
 
 \end{document}
