@@ -218,4 +218,10 @@ There are at most ${n \choose 2}$ possible min cuts $k$. Since finding each one 
 \end{eqnarray}
 \end{proof}
 
+Now, it is clear how one can change the Recursive Contraction Algorithm to store min cuts for each pair of vertices $u,v$ for $u \in V$ and $v \in V \setminus u$. We shall store a dictionary keyed on a pair of vertices $(u,v)$, which stores the smallest min cut separating $u$ and $v$ seen so far in the algorithm. For each min cut $k$ that is observed from the Recursive Contraction Algorithm, we shall take the partitions $U$ and $V$, and update the entry $(u,v)$ in the dictionary for each $u \in U$ and $v \in V$ if the weight of $k$ is smaller than the current min cut separating $u$ and $v$ in the dictionary.
+
+Since the Recursive Contraction Algorithm should find all min cuts in $\ln^2 n$ trials, each pair of vertices should have the lowest weight min cut possible separating them left in the dictionary after $\ln^2 n$ trials. Putting each pair into the menu will require a runtime of at most $O \left( {n \choose 2} \ln^2 n \right) = O(n^2 \ln^2 n)$.
+
+Therefore, the total runtime for finding all min cuts is $O(n^2 \ln^2 n + n^2 \ln^3 n) = O(n^2 \ln^3 n)$. Using these for the FPTAS will complete the scheme. Thus, the final runtime of the RPTAS for MSMSIP is $O(c n^4 / \epsilon^3)$. This is an improvement over the $O(c n^6 / \epsilon^3)$ naive algorithm presented previously.
+
 \end{document}
