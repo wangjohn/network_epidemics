@@ -10,6 +10,7 @@
 \theoremstyle{plain}
 \newtheorem{definition}{Definition}
 \newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}
 
 \title{Security on Networks}
@@ -169,16 +170,35 @@ First we define the problem of computing infection probabilities for multiple so
 
 \subsection{Summary of Karger's FPTAS for the All Terminal Problem}
 
-Karger solves the all terminal problem using a combination of a minimum cut finding algorithm and the Monte Carlo scheme. If $\tilde{P}_i$ is large, then it is sufficient to use the Monte Carlo algorithm because of the time bound of $O(\log n / (\epsilon^2 \tilde{P}))$. However, when $\tilde{P}$ is small and arbitrarily close to zero, the Monte Carlo simulation requires a prohibitive number of trials. Therefore, Karger develops another polynomial time algorithm which can be used when $\tilde{P} < 1/n^4$. When this is the case, we can find cuts that are small enough, and these cuts will provide an easy way to estimate the probability of failure.
+Karger solves the all terminal problem using a combination of a minimum cut finding algorithm and the Monte Carlo scheme. If $\tilde{P}_i$ is large, then it is sufficient to use the Monte Carlo algorithm because of the time bound of $O(\log n / (\epsilon^2 \tilde{P}))$. However, when $\tilde{P}$ is small and arbitrarily close to zero, the Monte Carlo simulation requires a prohibitive number of trials. Therefore, Karger develops another polynomial time algorithm which can be used when $\tilde{P} < 1/n^4$ (for explanation, we assume that all nodes have protection rate $q$, but this can be extended to each node having different protection rates without much difficulty). When this is the case, we can find cuts that are small enough, and these cuts will provide an easy way to estimate the probability of failure.
 
-To make this argument more rigorous, we shall develop the theory more formally. Notice that graphs become disconnected exactly when all the edges in a cut fail. Thus, it is clear that if each edge $i$ in a cut fails with probability $q_i$, then the cut will fail with probability $\prod_i q_i$. Karger proves the following useful lemma.
+To make this argument more rigorous, we shall develop the theory more formally. Notice that graphs become disconnected exactly when all the edges in a cut fail. Thus, it is clear that if each edge $i$ in a cut fails with probability $q_i$, then the cut will fail with probability $\prod_i q_i = q^c$. Karger proves the following useful lemma.
 
 \begin{lemma}
   Suppose $c$ is the weight of the minimum cut and an $\alpha$-minimum cut is any cut with weight less than or equal to $\alpha c$, then there are at most $n^{\alpha c}$ $\alpha$-minimum cuts.
 \end{lemma}
 
-Karger (1999) also shows that when the probability of the minimum cut failing is small, then we only need to determine the probability that a cut of value close to $c$ fails. The paper proceeds to show that it is sufficient to find the all $\alpha$-minimum cuts, of which there are $O(n^{\alpha c})$ using Karger's Recursive Contraction Algorithm. This produces a set of near minimum cuts, from which we can then compute the loss probability
-Now suppose that $c$ is the weight of the minimum cut. Karger proves the fo
+Karger (1999) also shows that when the probability of the minimum cut failing is small, then we only need to determine the probability that a cut of value close to $c$ fails. The paper proceeds to show that it is sufficient to find the all $\alpha$-minimum cuts, of which there are $O(n^{\alpha c})$ using Karger's Recursive Contraction Algorithm. The paper shows that when $\tilde{P} < 1/n^4$, then choose:
+\begin{eqnarray}
+  \alpha = 2 - \frac{\ln \epsilon}{\delta \ln n}
+\end{eqnarray}
+
+Where we define $\tilde{P}^c = n^{-(2 + \delta)}$. Using this $\alpha$, Karger (1999) shows that one can find the $n^{2 \alpha}$ smallest cuts to find an $\epsilon$ approximation. To do this, we take the $n^{2 \alpha}$ smallest cuts (found using the Recursive Contraction Algorithm), and convert it into a disjunctive normal form (DNF) counting problem, which has a well-known FPTAS. Converting the set of smallest cuts into the DNF problem can be achieved by assigning a boolean variable $x_e$ to each edge $e$ and writing the probability of infecting everyone as as $F = \vee_i (\wedge_{e \subset E_i} x_e)$ for all cuts $E_i$ that we have found. Here, we let $x_e$ denote the probability of infection spreading on edge $e$. This is exactly a DNF counting problem and can be solved using Karp, Luby, and Madras's FPTAS to solve this in $O(c n^{2 \alpha} / \epsilon^2) = O(c n^4 / \epsilon^3)$ time.
+
+\subsection{Naive Extension to MSMSIP Problem}
+
+Using Karger (1999)'s algorithm, it is easy to take a naive approach to obtain an FPTAS for the MSMSIP problem. This can be done by first solving the single-source single-sink problem, then solving the problem for all ${n \choose 2}$ pairs of nodes, which is still a polynomial in $n$. This should provide the probability of infection for each possible pair of source infection nodes, and the second node.
+
+To solve the single-source single-sink problem, one needs to find cuts that separate nodes $u,v$ where $u \in V$ is the source and $v \in V \setminus u$ is the sink. Karger (1999) shows in lemma 4.2 that using the same overall FPTAS structure as before, but instead solving for the smallest cuts that separate $u$ and $v$, one can achieve an FPTAS for the single-source single-sink problem. This will still have running time $O(c n^4 / \epsilon^3)$ because the Recursive Contraction Algorithm can be trivially modified to find cuts that separate $u$ and $v$.
+
+Thus, an FPTAS to the MSMSIP problem can be achieved in ${n \choose 2} O(c n^4 / \epsilon^3) = O(c n^6 /\epsilon^3)$ running time.
+
+\subsection{Improvements to the Naive FPTAS for MSMSIP}
+
+However, the naive extension of Karger's FPTAS can be improved. In the following, we present a novel scheme for improving the asymptotic runtime, since $O(c n^6 / \epsilon^3)$ is probably intractable in practice. We improve the runtime of a FPTAS for MSMSIP to $O(c n^4 / \epsilon^3)$ which is potentially tractable in practice. We do this by modifying the Recursive Contraction Algorithm to find all minimum cuts and storing them.
+
+The problem with the naive scheme is that it wastes potential information which might be useful. For example, 
+
 
 
 \end{document}
