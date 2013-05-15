@@ -197,8 +197,25 @@ Thus, an FPTAS to the MSMSIP problem can be achieved in ${n \choose 2} O(c n^4 /
 
 However, the naive extension of Karger's FPTAS can be improved. In the following, we present a novel scheme for improving the asymptotic runtime, since $O(c n^6 / \epsilon^3)$ is probably intractable in practice. We improve the runtime of a FPTAS for MSMSIP to $O(c n^4 / \epsilon^3)$ which is potentially tractable in practice. We do this by modifying the Recursive Contraction Algorithm to find all minimum cuts and storing them.
 
-The problem with the naive scheme is that it wastes potential information which might be useful. For example, 
+The problem with the naive scheme is that it wastes potential information which might be useful. For example, the minimum cut between nodes $u$ and $v$ will also be the minimum cut between either $u$ or $v$ and another node $w$. This is true because there will be at least one other node in either $u$ or $v$'s partition. Note that the size $|U|$ of $u$'s partition $U$ can be related to $|V|$, the size of $v$'s partition $V$, by the expression $n = |U| + |V|$. Thus, even if $U$ only contains a single element, $V$ will contain $n-1$ elements. This simple exercise has shown that there is a large amount of repeated information between minimum cuts computed for different nodes.
 
+In fact, we can show that one can find all the minimum cuts using the Recursive Contraction Algorithm in the same time that it takes to find a single minimum cut. Karger and Stein (1996) show that the probability $P(n)$ of a specific cut is given by $P(n) = O(1/ \ln n)$. 
 
+\begin{theorem}
+Using the Recursive Contraction Algorithm, one can find all min cuts with probability of missing any min cut at $O(1/n)$ in a running time of $O(n^2 \ln^3 n)$.
+\end{theorem}
+\begin{proof}
+Running the Recursive Contraction Algorithm takes $O(n^2 \ln n)$ time, as described by Karger and Stein (1996), so it takes $O(n^2 \ln^3 n)$ time to run the algorithm $O( \ln^2 n)$ times. It remains to be shown that running the algorithm $O(\ln^2 n)$ times will bound the probability of missing any minimum cut by $O(1/n)$.
+
+We know however that there are at most ${n \choose 2}$ min cuts, because each min cut must contain two partitioned sets of vertices. Moreover, the probability of not finding a specific cut $k$ is given by:
+\begin{eqnarray}
+  Pr[\textrm{miss }k] = (1 - P(n))^{O( \ln^2 n)} \leq \left(1 - \frac{c}{\ln n} \right)^{\frac{3 \ln^2 n}{c}} \leq e^{-3 \ln n} = \frac{1}{n^3}
+\end{eqnarray}
+
+There are at most ${n \choose 2}$ possible min cuts $k$. Since finding each one of these min cuts is independent, the probability of missing any of the min cuts is
+\begin{eqnarray}
+  {n \choose 2} \frac{1}{n^3} \leq \frac{n^2}{2} \frac{1}{n^3} = O \left( \frac{1}{n} \right)
+\end{eqnarray}
+\end{proof}
 
 \end{document}
