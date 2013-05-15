@@ -3,6 +3,8 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{float}
+\usepackage{hyperref}
 \usepackage[margin=1.25in]{geometry}
 
 \theoremstyle{plain}
@@ -26,7 +28,7 @@ In this section, we provide results from computational simulations of our model.
 
 To begin, we present results from simulating the non-dynamic model. In this case, each individual chooses his protection $q \in [0,1)$ before the game begins and is not allowed to change his choice as the game proceeds. The individual is not given any idea of what his position in the graph will be, but he does know the probability of edge creation $p$.
 
-Solving for a mixed strategy Nash Equilibrium in this context is $PPAD$ complete.\footnote{http://www.cs.berkeley.edu/~christos/papers/cacmDGP-2.pdf} This implies that for all practical purposes, solving for a Nash Equilibrium is computationally intractable, although little is known about the actual complexity of $PPAD$ in relation to $P$ and $NP$.\footnote{http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=4031362} 
+  Solving for a mixed strategy Nash Equilibrium in this context is $PPAD$ complete.\footnote{\url{http://www.cs.berkeley.edu/~christos/papers/cacmDGP-2.pdf}} This implies that for all practical purposes, solving for a Nash Equilibrium is computationally intractable, although little is known about the actual complexity of $PPAD$ in relation to $P$ and $NP$.\footnote{\url{http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=4031362}} 
 
 Because we cannot compute the equilibrium vector of protections $\bar{q}$ where $q_i \in [0,1)$ is player $i$'s choice of protection, we can sweep along a grid of representative values for $\bar{q}$ and examine the game at each one of these values.
 
@@ -48,31 +50,40 @@ To examine the outcome of a contagion spreading on an Erdos Renyi graph with edg
 
 We use the above model to simulate results, with $n = 100$, $\gamma = 250$, and $\kappa = 100$. In order words, we generate $\kappa = 100$ random graphs for each set of Erdos Renyi parameters, then on each graph, we run $\gamma = 250$ distinct infections which each start at a random node. The results are then summarized for different protection rates of $q$.
 
-We begin by presenting the average infection probability $\hat{P}$ when the edge creation probability in Erdos Renyi is very small (we choose $p = 0.005$). Here the Erdos Renyi parameter is $np = 0.5$, which is below the threshold value for the existence of a giant component. Under this regime, the average infection probability $\hat{P}$ is very low for all protection levels (even a protection rate of $q = 0.05$).
+We begin by presenting the average infection probability $\hat{P}$ when the edge creation probability in Erdos Renyi is very small (we choose $p = 0.005$). Here the Erdos Renyi parameter is $np = 0.5$, which is below the threshold value for the existence of a giant component. Under this regime, the average infection probability $\hat{P}$ is very low for all protection levels (even a protection rate of $q = 0.05$), as seen in the simulation results from figure \ref{avg_prob_np05.fig}.
 
 The intuition behind this is clear. Since $np = 0.5 < 1$, the average size of a component is small, so the amount that the infection can spread is decreased. Thus, even for low protection rates, the infection cannot spread very far.
 
-\begin{figure}
-  \caption{Average Infection Rates for $np = 0.5 < 1$}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4in]{avg_prob_np05.png}
+  \caption{Average Infection Rates with No Giant Component $np = 0.5 < 1$}
+  \label{avg_prob_np05.fig}
 \end{figure}
 
-When the Erdos Renyi parameter predicts the presence of a giant component, the average infection rate has a strong dependence on the protection rate. We use $np = 5 > 1$ which should produce a giant component with high probability, and simulate the resulting infection probabilities for various values of $q$. For low $q$, the average infection rate is incredibly high. For example, when $q = 0.05$, the average infection rate is $\hat{P} = 0.93$ with a standard deviation of $0.0103$.
+When the Erdos Renyi parameter predicts the presence of a giant component, the average infection rate has a strong dependence on the protection rate. We use $np = 5 > 1$ which should produce a giant component with high probability, and simulate the resulting infection probabilities for various values of $q$. Figure \ref{avg_prob_np5.fig} shows the results from our simulations for $np = 5$. For low $q$, the average infection rate is incredibly high. For example, when $q = 0.05$, the average infection rate is $\hat{P} = 0.93$ with a standard deviation of $0.0103$.
 
-However, as the protection rate increases, the average infection probability decreases almost linearly until about $q = 0.6$. Once $q = 0.6$, the positive externalities start to kick in and the average infection probability drops off more dramatically than the linear trend would predict. This can be attributed to the "network effect", or the extra benefit that everyone obtains from one person increasing their protection. Having higher $q$ will positively impact your neighbors because of the lower probability of you getting infected and thus transmitting to your neighbors. 
+As the protection rate increases, the average infection probability decreases almost linearly until about $q = 0.6$. Once $q = 0.6$, the positive externalities start to kick in and the average infection probability drops off more dramatically than the linear trend would predict. This can be attributed to the "network effect", or the extra benefit that everyone obtains from one person increasing their protection. Having higher $q$ will positively impact your neighbors because of the lower probability of you getting infected and thus transmitting to your neighbors. 
 
-\begin{figure}
-  \caption{Average Infection Rates for $np = 5 > 1$}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4in]{avg_prob_np5.png}
+  \caption{Average Infection Rates with Giant Component $np = 5 > 1$}
+  \label{avg_prob_np5.fig}
 \end{figure}
 
-However, you must have enough connections in order for this network effect to become substantial. This is why the network effect does not manifest itself when there is no giant component. The figure below shows the network effect for different levels of $q$, where network effect $\nu$ is defined as follows:
+However, you must have enough connections in order for this network effect to become substantial. This is why the network effect does not manifest itself when there is no giant component. Figure \ref{network_effects_np5.fig} shows the network effect for different levels of $q$, where network effect $\nu$ is defined as follows:
 \begin{eqnarray}
  \nu = 1 - q - \hat{P}
 \end{eqnarray}
 
 The network effect starts to increase to something significant by $q = 0.5$, then falls off again after $q = 0.8$. The fall off in the network effect comes from the saturation of protection levels. After a certain point, the marginal benefit of extra protection starts to decrease because of the difficulty of actually spreading the infection.
 
-\begin{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4in]{network_effects_np5.png}
   \caption{Network Effect in a Giant Component ($np = 5$)}
+  \label{network_effects_np5.fig}
 \end{figure}
 
 \subsection{Computational Intractibility of $\tilde{P}_i$}
@@ -87,7 +98,7 @@ The reduction can be seen by introducing a known $\# P$ problem called the Two T
 
 Note that in the Two Terminal Problem, each edge $e \in E$ has some probability of failure $p_e \in [0,1]$ as defined by the function $Pr$.
 
-Showing the difficulty of the computation of $\tilde{P}_i$ in the non-dynamic model is now as simple as showing a reduction of the Two Terminal Problem, since it is $\# P$ complete as shown by Ball (1980).\footnote{http://onlinelibrary.wiley.com/doi/10.1002/net.3230100206/pdf}
+Showing the difficulty of the computation of $\tilde{P}_i$ in the non-dynamic model is now as simple as showing a reduction of the Two Terminal Problem, since it is $\# P$ complete as shown by Ball (1980).\footnote{\url{http://onlinelibrary.wiley.com/doi/10.1002/net.3230100206/pdf}}
 
 \begin{theorem}
   Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard in the non-dynamic model.
