@@ -46,6 +46,15 @@ To examine the outcome of a contagion spreading on an Erdos Renyi graph with edg
   \item Compute the standard deviation of $\hat{P}$ by using standard techniques of computing standard deviations for a sample of random variables from a binomial distribution.
 \end{itemize}
 
+In fact, there are provable bounds on how good our Monte Carlo results are for the approximation of $\tilde{P}_i$, given by Karp and Luby (1985) for the All Terminal problem (but can easily be extended to our problem):\footnote{See \url{http://www.sciencedirect.com/science/article/pii/0885064X85900214} for the full proof.}
+
+\begin{theorem}
+  To estimate the probability $\tilde{P}_i$ for $i \in V \setminus u$ where $u \in V$ is the source node of the infection to within a multiplicative factor of $1 + \epsilon$ for all $\epsilon \in [0,1]$, it suffices to run the Monte Carlo algorithm for a number of trials given by:
+  \begin{eqnarray}
+    O \left( \frac{\ln n}{\epsilon^2 \tilde{P}_i} \right)
+  \end{eqnarray}
+\end{theorem}
+
 \subsection{Simulation Results}
 
 We use the above model to simulate results, with $n = 100$, $\gamma = 250$, and $\kappa = 100$. In order words, we generate $\kappa = 100$ random graphs for each set of Erdos Renyi parameters, then on each graph, we run $\gamma = 250$ distinct infections which each start at a random node. The results are then summarized for different protection rates of $q$.
@@ -139,5 +148,37 @@ There are a number of related problems which are computationally hard. Actually,
 
   It is clear that the expected number of infected nodes in this new graph increases by $P_i(u)$, the probability of $u$ becoming infected. Thus, finding the expected number of infected nodes is at least as hard as finding the probability of infection of a node. Thus, we see that the Epidemic Expected Infection Problem is harder than the Epidemic Probability Problem, which is in $\# P$.
 \end{proof}
+
+\section{Fast FPTAS for Infection Probabilities}
+
+Although the problem of solving for infection probabilities is $\# P$ hard, it is still possible to approximate the probabilities. In fact, Karger (1999) developed a Fully Polynomial Time Approximation Scheme (FPTAS) for solving the all terminal problem, which can be defined as follows: given a graph $G = (V,E)$ and a probability function on the edges $Pr: E \to [0,1]$ of the probability of any edge failing, find the probability that the entire graph remains connected after edge failures occur with probability $Pr(e)$ for each edge $e \in E$.
+
+An FPTAS is an incredibly strong result, as it means that for any $\epsilon > 0$, one can use the FPTAS to approximate the result to within a factor of $1 + \epsilon$ in time polynomial in the inputs and $\epsilon$. Thus, one can get arbitrarily close to the exact result by using a smaller and smaller $\epsilon$, in exchange for a higher running time.
+
+There exists a naive generalization of Karger's FPTAS to the problem of computing all infection probabilities. In this section, we provide an overview of Karger's FPTAS, it's naive generalization to computing multiple-source multiple-sink infection probabilities (MSMSIP), and finally an asymptotically faster FPTAS than the naive algorithm for MSMSIP.
+
+\subsection{Multiple-Source Multiple-Sink Infection Probabilities}
+
+First we define the problem of computing infection probabilities for multiple sources and multiple sinks.
+
+\begin{definition}
+    We will be given a graph $G = (V,E)$ and some function of protections $Q: E \to [0,1)$ which defines the protection $q_v$ inherent for the infection to move down edge $(u,v)$. The \emph{MSMSIP problem} is to find the probability of infection $P_i(u)$ for each node $i \in V \setminus u$ for all possible starting nodes $u \in V$.
+  \end{definition}
+
+  Since we have shown the single-source single-sink infection probability problem to be $\# P$, it must be the case that MSMSIP is also $\# P$ because solving the MSMSIP implies that you have also solved the singular problem.
+
+\subsection{Summary of Karger's FPTAS for the All Terminal Problem}
+
+Karger solves the all terminal problem using a combination of a minimum cut finding algorithm and the Monte Carlo scheme. If $\tilde{P}_i$ is large, then it is sufficient to use the Monte Carlo algorithm because of the time bound of $O(\log n / (\epsilon^2 \tilde{P}))$. However, when $\tilde{P}$ is small and arbitrarily close to zero, the Monte Carlo simulation requires a prohibitive number of trials. Therefore, Karger develops another polynomial time algorithm which can be used when $\tilde{P} < 1/n^4$. When this is the case, we can find cuts that are small enough, and these cuts will provide an easy way to estimate the probability of failure.
+
+To make this argument more rigorous, we shall develop the theory more formally. Notice that graphs become disconnected exactly when all the edges in a cut fail. Thus, it is clear that if each edge $i$ in a cut fails with probability $q_i$, then the cut will fail with probability $\prod_i q_i$. Karger proves the following useful lemma.
+
+\begin{lemma}
+  Suppose $c$ is the weight of the minimum cut and an $\alpha$-minimum cut is any cut with weight less than or equal to $\alpha c$, then there are at most $n^{\alpha c}$ $\alpha$-minimum cuts.
+\end{lemma}
+
+Karger (1999) also shows that when the probability of the minimum cut failing is small, then we only need to determine the probability that a cut of value close to $c$ fails. The paper proceeds to show that it is sufficient to find the all $\alpha$-minimum cuts, of which there are $O(n^{\alpha c})$ using Karger's Recursive Contraction Algorithm. This produces a set of near minimum cuts, from which we can then compute the loss probability
+Now suppose that $c$ is the weight of the minimum cut. Karger proves the fo
+
 
 \end{document}
