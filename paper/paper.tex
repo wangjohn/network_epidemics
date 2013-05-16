@@ -23,13 +23,13 @@
 
 \section{Introduction}
 
-As epidemics spread on computer, epidemiological, and financial networks, agents in the network often undertake costly investments in security to protect themselves from infection. However, these investments are often imperfect and typically succeed with some probability less than one. Furthermore, the cost of a security investment and its probability of success both increase with the chosen level of security. Thus agents face a tradeoff between choosing high investment in security to minimize infection probability and choosing low investment to minimize cost. Given the easily definable utility functions of agents, it is appropriate to model the choice of security as a game on a network.
+As epidemics spread on computer, disease propagation, and financial networks, agents in the network often undertake costly investments in security to protect themselves from infection. However, these investments are often imperfect and typically succeed with some probability less than one. Furthermore, the cost of a security investment and its probability of success both increase with the chosen level of security. Thus agents face a tradeoff between choosing high investment in security to minimize infection probability and choosing low investment to minimize cost. Given the easily constructible utility functions of agents, it is appropriate to model the choice of security as a game on a network.
 
-In this paper, we extend the game theoretic framework developed in unpublished work from Acemoglu et al. to random graph models. We spend the majority of the paper considering the static model of infection in which each agent chooses a security level once before epidemic propagation. In the static infection model, we specifically concern ourselves with characterizing the difference in infection rates between the Nash equilibrium and the social optimum. We also discuss some simulation results on the dynamic model, in which agents observe the infection state of their $k$-neighborhood at each timestep and update their security investments accordingly. Finally, we present some results on the intractability of computing infection probabilities exactly, and we provide a fully polynomial time approximation scheme for arbitrarily small $\epsilon$.
+In this paper, we extend the game theoretic framework developed in unpublished work from Acemoglu et al. (2013) to random graph models. We spend the majority of the paper considering the static model of infection in which each agent chooses a security level once before the attacker initiates the infection. In the static infection model, we specifically concern ourselves with characterizing the difference in infection rates between the Nash equilibrium and the social optimum. We also discuss some simulation results on the dynamic model, in which agents observe the infection state of their $k$-neighborhood at each timestep and update their security investments accordingly. Finally, we present some results on the intractability of computing infection probabilities exactly, and we provide a fully polynomial time approximation scheme for arbitrarily small $\epsilon$.
 
 \section{Static Infection Model}
 
-Although modeling infection on the network dynamically with a model such as SIR is more representative of real epidemics, such a model is intractable for the purpose of theoretical reasoning. In this section, we utilize the static model of infection as described in unpublished work by Acemoglu et al. (2013). Specifically, we apply the network security game model to Erd\H{o}s-R\'{e}nyi random graphs. We characterize the difference in network infection rates between the case of actions chosen by rational utility-maximizing agents and the case of actions chosen to maximize total social welfare. This difference is significant, as it can be readily interpreted as the cost of anarchy in a society with interactions modeled by a random graph. 
+Although modeling infection on the network dynamically with a model such as SIR is more representative of real epidemics, such a model is intractable for the purpose of theoretical reasoning. In this section, we utilize the static model of infection as described in unpublished work by Acemoglu et al. Specifically, we apply the network security game model to Erd\H{o}s-R\'{e}nyi random graphs. We characterize the difference in network infection rates between the case of actions chosen by rational utility-maximizing agents and the case of actions chosen to maximize total social welfare. This difference is significant, as it can be readily interpreted as the cost of anarchy in a society with interactions modeled by a random graph. 
 
 \subsection{Game Definition}
 
@@ -59,7 +59,7 @@ Next, we consider the importance of phase transitions in the spread of infection
 
 \subsection{Equilibrium and Social Optimum}
 
-First, we consider the Nash equilibrium and social optimum in the subcritical case, i.e. when there exists no giant component. Since $qn$ of the agents are immunized at the beginning of the game, the effective size of the remaining network is $n(1-q)$.Therefore, the network exists in the subcritical phase for $(n(1-q)-1)p < 1$. Let $S(q, n)$ denote the expected size of the component of a randomly chosen node. The following equation is adapted from Equation (4.19) in Jackson, derived using a generating function argument.
+First, we consider the Nash equilibrium and social optimum in the subcritical case, i.e. when there exists no giant component. Since $qn$ of the agents are immunized at the beginning of the game, the effective size of the remaining network is $n(1-q)$. Therefore, the network exists in the subcritical phase for $(n(1-q)-1)p < 1$. Let $S(q, n)$ denote the expected size of the component of a randomly chosen node. The following equation is adapted from Equation (4.19) in Jackson, derived using a generating function argument.
 \begin{eqnarray}
 	S(q, n) = 1 + \frac{1}{1 - (n(1-q)-1)p}
 \end{eqnarray}
@@ -129,21 +129,21 @@ For all cost functions, the cost of anarchy is exactly $0$ for subcritical proba
 
 \section{Simulation Results}
 
-In this section, we provide results from computational simulations of our model. The graphs that we simulate on are created using the Erdos-Renyi mechanism with the number of nodes fixed at $n = 100$. Fixing the number of nodes reduces the number of parameters that can vary.
+In this section, we provide results from computational simulations of our model. The graphs that we simulate on are created using the Erd\H{o}s-R\'{e}nyi mechanism with the number of nodes fixed at $n = 100$. Fixing the number of nodes reduces the number of parameters that can vary.
 
 \subsection{Simulating the Static Model}
 
 Solving for a mixed strategy Nash Equilibrium in this context is $PPAD$ complete \cite{daskalakis08}. This implies that for all practical purposes, solving for a Nash Equilibrium is computationally intractable, although little is known about the actual complexity of $PPAD$ in relation to $P$ and $NP$ \cite{chen06}.
 
-Because we cannot compute the equilibrium vector of protections $\bar{q}$ where $q_i \in [0,1)$ is player $i$'s choice of protection, we can sweep along a grid of representative values for $\bar{q}$ and examine the game at each one of these values.
+Because we cannot compute the equilibrium vector of security $\bar{q}$ where $q_i \in [0,1)$ is player $i$'s choice of security, we can sweep along a grid of representative values for $\bar{q}$ and examine the game at each one of these values.
 
-Fortunately, this game is symmetric for each player and Acemoglu et al (2013) have shown that under such situations, the Nash Equilibrium for each player is to play the same protection $q$. Therefore it suffices to check setting $q_i = q_j$ for each player $i \neq j$ in our simulations. We shall call $q = q_i$ the protection that each player chooses.
+Fortunately, this game is symmetric for each player and Acemoglu et al (2013) have shown that under such situations, the Nash Equilibrium for each player is to play the same security $q$. Therefore it suffices to check setting $q_i = q_j$ for each player $i \neq j$ in our simulations. We shall call $q = q_i$ the security that each player chooses.
 
-To examine the outcome of a contagion spreading on an Erdos Renyi graph with edge probability $p$, $n = 100$, and protection rate $q$ for each participant, we must be able to compute $\tilde{P}_i(A, q_{-i}, \Phi)$, the probability that the infection reaches $i$ (i.e. the probability that any one of $i$'s neighbors gets infected). However, since computing $\tilde{P}_i$ is NP-hard, we instead use Monte Carlo simulations to approximate $\tilde{P}_i$. We do so in the following manner:
+To examine the outcome of a contagion spreading on an Erd\H{o}s-R\'{e}nyi graph with edge probability $p$, $n = 100$, and security rate $q$ for each participant, we must be able to compute $\tilde{P}_i(A, q_{-i}, \Phi)$, the probability that the infection reaches $i$ (i.e. the probability that any one of $i$'s neighbors gets infected). However, since computing $\tilde{P}_i$ is NP-hard, we instead use Monte Carlo simulations to approximate $\tilde{P}_i$. We do so in the following manner:
 
 \begin{itemize}
-  \item Generate $\kappa$ Erdos Renyi graphs with parameters $G(n, p)$.
-  \item For each graph instance and protection value $q$, we run the following for $\gamma$ trials: choose a random node to infect and run the infection to completion.
+  \item Generate $\kappa$ Erd\H{o}s-R\'{e}nyi graphs with parameters $G(n, p)$.
+  \item For each graph instance and security value $q$, we run the following for $\gamma$ trials: choose a random node to infect and run the infection to completion.
   \item Compute $\hat{P}$, an estimate of $\tilde{P}_i$ for all $i$, as the total number of infected nodes after $\gamma$ trials divided by the total number of nodes. For $n = 100$, if we let $I_j$ be the number of infected nodes on the $j$th trial, we have:
     \begin{eqnarray}
       \hat{P} = \frac{1}{n \gamma} \sum_{j=1}^{\gamma} I_j
@@ -162,11 +162,11 @@ In fact, there are provable bounds on how good our Monte Carlo results are for t
 
 \subsection{Static Simulation Results}
 
-We use the above model to simulate results, with $n = 100$, $\gamma = 250$, and $\kappa = 100$. In order words, we generate $\kappa = 100$ random graphs for each set of Erdos Renyi parameters, then on each graph, we run $\gamma = 250$ distinct infections which each start at a random node. The results are then summarized for different protection rates of $q$.
+We use the above model to simulate results, with $n = 100$, $\gamma = 250$, and $\kappa = 100$. In order words, we generate $\kappa = 100$ random graphs for each set of Erd\H{o}s-R\'{e}nyi parameters, then on each graph, we run $\gamma = 250$ distinct infections which each start at a random node. The results are then summarized for different security rates of $q$.
 
-We begin by presenting the average infection probability $\hat{P}$ when the edge creation probability in Erdos Renyi is very small (we choose $p = 0.005$). Here the Erdos Renyi parameter is $np = 0.5$, which is below the threshold value for the existence of a giant component. Under this regime, the average infection probability $\hat{P}$ is very low for all protection levels (even a protection rate of $q = 0.05$), as seen in the simulation results from figure \ref{avg_prob_np05.fig}.
+We begin by presenting the average infection probability $\hat{P}$ when the edge creation probability in Erd\H{o}s-R\'{e}nyi is very small (we choose $p = 0.005$). Here the Erd\H{o}s-R\'{e}nyi parameter is $np = 0.5$, which is below the threshold value for the existence of a giant component. Under this regime, the average infection probability $\hat{P}$ is very low for all security levels (even a security rate of $q = 0.05$), as seen in the simulation results from figure \ref{avg_prob_np05.fig}.
 
-The intuition behind this is clear. Since $np = 0.5 < 1$, the average size of a component is small, so the amount that the infection can spread is decreased. Thus, even for low protection rates, the infection cannot spread very far.
+The intuition behind this is clear. Since $np = 0.5 < 1$, the average size of a component is small, so the amount that the infection can spread is decreased. Thus, even for low security rates, the infection cannot spread very far.
 
 \begin{figure}[h!]
   \centering
@@ -175,9 +175,9 @@ The intuition behind this is clear. Since $np = 0.5 < 1$, the average size of a 
   \label{avg_prob_np05.fig}
 \end{figure}
 
-When the Erdos Renyi parameter predicts the presence of a giant component, the average infection rate has a strong dependence on the protection rate. We use $np = 5 > 1$ which should produce a giant component with high probability, and simulate the resulting infection probabilities for various values of $q$. Figure \ref{avg_prob_np5.fig} shows the results from our simulations for $np = 5$. For low $q$, the average infection rate is incredibly high. For example, when $q = 0.05$, the average infection rate is $\hat{P} = 0.93$ with a standard deviation of $0.0103$.
+When the Erd\H{o}s-R\'{e}nyi parameter predicts the presence of a giant component, the average infection rate has a strong dependence on the security rate. We use $np = 5 > 1$ which should produce a giant component with high probability, and simulate the resulting infection probabilities for various values of $q$. Figure \ref{avg_prob_np5.fig} shows the results from our simulations for $np = 5$. For low $q$, the average infection rate is incredibly high. For example, when $q = 0.05$, the average infection rate is $\hat{P} = 0.93$ with a standard deviation of $0.0103$.
 
-As the protection rate increases, the average infection probability decreases almost linearly until about $q = 0.6$. Once $q = 0.6$, the positive externalities start to kick in and the average infection probability drops off more dramatically than the linear trend would predict. This can be attributed to the "network effect", or the extra benefit that everyone obtains from one person increasing their protection. Having higher $q$ will positively impact your neighbors because of the lower probability of you getting infected and thus transmitting to your neighbors. 
+As the security rate increases, the average infection probability decreases almost linearly until about $q = 0.6$. Once $q = 0.6$, the positive externalities start to kick in and the average infection probability drops off more dramatically than the linear trend would predict. This can be attributed to the "network effect", or the extra benefit that everyone obtains from one person increasing their security. Having higher $q$ will positively impact your neighbors because of the lower probability of you getting infected and thus transmitting to your neighbors. 
 
 \begin{figure}[h!]
   \centering
@@ -191,7 +191,7 @@ However, you must have enough connections in order for this network effect to be
  \nu = 1 - q - \hat{P}
 \end{eqnarray}
 
-The network effect starts to increase to something significant by $q = 0.5$, then falls off again after $q = 0.8$. The fall off in the network effect comes from the saturation of protection levels. After a certain point, the marginal benefit of extra protection starts to decrease because of the difficulty of actually spreading the infection.
+The network effect starts to increase to something significant by $q = 0.5$, then falls off again after $q = 0.8$. The fall off in the network effect comes from the saturation of security levels. After a certain point, the marginal benefit of extra security starts to decrease because of the difficulty of actually spreading the infection.
 
 \begin{figure}[h!]
   \centering
@@ -200,27 +200,25 @@ The network effect starts to increase to something significant by $q = 0.5$, the
   \label{network_effects_np5.fig}
 \end{figure}
 
-\subsection{Dynamic Infection Model}
+\subsection{Simulating the Dynamic Model}
 
 We analyze agents dynamically choosing security. Similar to the SIR model introduced in class, we present the notion of attacking and curing nodes as agents choose their level of security at each timestep. We begin by using an Erd\H{o}s-R\'{e}nyi graph. However, in some applications, as with the case with the spread of infectious disease, the Barbasi-Albert preferential attachment model may be preferable for a higher clustering coefficient and may better mimic the choice of selecting a new partner. In the preferential attachment model with a parameter $k$, we start with $k$ nodes that are completely connected. For each node added to the graph, we add $k$ edges, weighted by the degrees of the current nodes in the graph.
 
-Agents are fully informed of the attack and cure probabilities, as well as the security levels chosen by the nodes in their neighborhood in the previous timestep. The attack probability is equivalent to the infection rate $\alpha$ in the SIR model, i.e. the probability that a currently uninfected node will be infected at the next timestep. Similarly, the cure probability is analogous to the recovery rate $\gamma$, i.e. the probability that a currently infected node will no longer be infected at the next timestep.
+Agents are fully informed of the attack and cure probabilities, as well as the security levels chosen by the nodes in their neighborhood in the previous timestep. The attack probability, denoted by  $\alpha$, is the probability of exogenous attack on a random node at each timestep. Similarly, the cure probability is analogous to the recovery rate $\gamma$, i.e. the probability that a currently infected node will no longer be infected at the next timestep.
 
 At each time step, each agent chooses its level of security based on the levels of security of its neighborhood from the previous round and the attack and cure probabilities. The neighborhood of a node is defined for a pre-determined scope, indicating how deep into the graph an agent can see. For example, a scope of $1$ indicates that  agent $i$ can only view the choices of its neighbors and a scope of $2$ means that it can also see the choices of its neighbor's neighbors.
 
-For dynamic simulations, we use a default cost function of $c(q) = q^2$. Given that the cure probability is $\gamma$ and the attack probability is $\alpha$, the probability $\tilde{\textbf{P}}(A,q_{-i})$, given the network $A$ and the security profile $q_{-i}$, that the infection reaches agent $i$ is:
+For dynamic simulations, we use a cost function of $c(q) = q^2$. Given that the cure probability is $\gamma$ and the attack probability is $\alpha$, the probability $\tilde{\textbf{P}}(A,q_{-i})$, given the network $A$ and the security profile $q_{-i}$, that the infection reaches agent $i$ is:
 \begin{equation}
 	\tilde{\textbf{P}}(A,q_{-i}) = 1 - (1 - \alpha) \prod_{n \in N(i)}{(1-P_n)}
 \end{equation}
 where $P_n$ is the probability of the infection reaching its neighbor. For a scope of $1$, because the agent can only see a certain scope through the graph, it assumes that if it is infected, it will be no longer infected by the next time step by the cure probability and that if it is not infected, it will be infected with a probability of the attack probability. For larger scopes, the node also uses information about its neighbor's neighbors to determine the probability that infection will reach it.
 
-\subsection{Simulating the Dynamic Model}
+\subsection{Dynamic Simulation Results}
 
-We consider the real-world application of the spread of HIV in sub-Saharan Africa. We choose to use the prevalence of HIV as the attack probability, as a measure of the invasiveness of HIV. We use the probability of death from HIV as the cure probability; because there is no current actual cure for HIV, we choose the probability of death as a measure of how often an infected node is removed from the graph. From online HIV statistics, we decide to use $\alpha=0.05$ and $\gamma=0.06$, with a preferential attachment model, and a scope of $1$. Simulations were run for different attack and cure probabilities for either an Erdos-Reyni graph with $n=100$ and $p=0.05$, or a preferential attachment model with $n=100$ and $k=5$. We assume a scope of $1$.
+We find that in the dynamic model, the initial choice of security level for all of the nodes makes little difference in the resulting infection probability of the graph (Fig. \ref{fig:attack_cure}. Intuitively, this makes sense, since over many timesteps where players update their choice of security, it will converge to some relatively stable security profile, with changes from attacks and cures cancelling. The results suggest that in the long-term, if attack and cure probabilities remain stable, a population of the graph will remain infected, the size of which depends on the choices of $\gamma$ and $\alpha$.
 
-We find that in the dynamic model, the initial choice of protection level for all of the nodes makes little difference in the resulting infection probability of the graph (Fig. \ref{fig:attack_cure}. Intuitively, this makes sense, since over many timesteps where players update their choice of protecti)on, it will converge to some relatively stable security profile, with changes from attacks and cures canceling. The results suggest that in the long-term, if attack and cure probabilities remain stable, a population of the graph will remain infected, the size of which depends on the choices of $\gamma$ and $\alpha$.
-
-We consider the real-world application of the spread of HIV in sub-Saharan Africa. We choose to use the prevalence of HIV as the attack probability, as a measure of the invasiveness of HIV. We use the probability of death from HIV as the cure probability; because there is no current actual cure for HIV, we choose the probability of death as a measure of how often an infected node is removed from the graph. From online HIV statistics, we decide to use $\alpha=0.05$ and $\gamma=0.06$, with a preferential attachment model, and a scope of $1$. Our results suggest that in the long-term, given stable $\alpha$ and $\gamma$, a proportion of the population will always remain infected (Fig. \ref{fig:hiv}). It may seem reasonable to vary the cure probability, given that, in application, a government agent may have more control over government spending for research for a cure or other means of removing infection from the graph, whereas $\alpha$ is more likely determined by some exogenous factor. We vary $\gamma$ while fixing $\alpha=0.05$ and find that, as would be expected, infection probability decreases with increased $\gamma$, suggesting that there may be some way to predictably control infection by varying $\gamma$.
+We consider the real-world application of the spread of HIV in sub-Saharan Africa. We choose to use the prevalence of HIV as the attack probability, as a measure of the invasiveness of HIV. We use the probability of death from HIV as the cure probability - because there is no current actual cure for HIV, we choose the probability of death as a measure of how often an infected node is removed from the graph. From online HIV statistics, we decide to use $\alpha=0.05$ and $\gamma=0.06$, with a preferential attachment model, and a scope of $1$. Our results suggest that in the long-term, given stable $\alpha$ and $\gamma$, a proportion of the population will always remain infected (Fig. \ref{fig:hiv}). It may seem reasonable to vary the cure probability, given that, in application, a government agent may have more control over government spending for research for a cure or other means of removing infection from the graph, whereas $\alpha$ is more likely determined by some exogenous factor. We vary $\gamma$ while fixing $\alpha=0.05$ and find that, as would be expected, infection probability decreases with increased $\gamma$, suggesting that there may be some way to predictably control infection by varying $\gamma$.
 
 \begin{figure}[h!]
   \centering
@@ -234,7 +232,7 @@ We consider the real-world application of the spread of HIV in sub-Saharan Afric
   \centering
   \includegraphics[width=4in]{varying_cure_for_dynamic_hiv_model.jpg}
   \includegraphics[width=4in]{avg_infection_for_fixed_attack_probability.jpg}
-  \caption{$\alpha$ is fixed for the HIV model at $0.05$, with preferential attachment, and $\gamma$ is varied. a) shows the average infection probability for different initial protection levels and b) averages the infection probability over the different protection levels and compares to the choice of $\gamma$.}
+  \caption{$\alpha$ is fixed for the HIV model at $0.05$, with preferential attachment, and $\gamma$ is varied. a) shows the average infection probability for different initial security levels and b) averages the infection probability over the different security levels and compares to the choice of $\gamma$.}
   \label{fig:hiv}
 \end{figure}
 
@@ -258,7 +256,7 @@ Note that in the Two Terminal Problem, each edge $e \in E$ has some probability 
 Showing the difficulty of the computation of $\tilde{P}_i$ in the static model is now as simple as showing a reduction of the Two Terminal Problem, since it is $\# P$ complete as shown by Ball (1980) \cite{ball80}.
 
 \begin{theorem}
-  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard in the static model.
+  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erd\H{o}s-R\'{e}nyi graph with edge probability $p$ is $\# P$ hard in the static model.
 \end{theorem}
 \begin{proof}
   We shall show that every instance of the Two Terminal Problem is an instance of the Epidemic Probability Problem (what we shall call the problem of computing $\tilde{P}_i$ in our model).
@@ -266,17 +264,17 @@ Showing the difficulty of the computation of $\tilde{P}_i$ in the static model i
   Suppose we have an instance $\pi_{ttp}$ of the Two Terminal Problem. We can find a solution as follows:
   \begin{itemize}
     \item Create an instance $\pi_{epp}$ of the Epidemic Probability Problem using graph $G$ from $\pi_{ttp}$.
-    \item Set the protection rates $q_e \in [0,1)$ for each edge $e \in E$ for the Epidemic Probability Problem as $1 - Pr(e)$, where $Pr(e)$ is the loss probability for edge $e$ in the Two Terminal Problem.
+    \item Set the security rates $q_e \in [0,1)$ for each edge $e \in E$ for the Epidemic Probability Problem as $1 - Pr(e)$, where $Pr(e)$ is the loss probability for edge $e$ in the Two Terminal Problem.
     \item Solve the Epidemic Probability Problem. The probability $\tilde{P}_v$ for a given source of infection $u$ will be the solution to the Two Terminal Problem.
   \end{itemize}
 
   Thus, we have shown that the Two Terminal Terminal problem can be reduced in polynomial time to the Epidemic Probability Problem, which shows that the Epidemic Probability Problem is at least as hard as the Two Terminal Problem (which is $\# P$ hard).
 \end{proof}
 
-The complexity result can be extended to the dynamic case when the protection for each node potentially changes. This means that for both the static and the dynamic model, the computation of $\tilde{P}_i$ is computationally intractable.
+The complexity result can be extended to the dynamic case when the security for each node potentially changes. This means that for both the static and the dynamic model, the computation of $\tilde{P}_i$ is computationally intractable.
 
 \begin{corollary}
-  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard is the dynamic model with changes in protection in each time step.
+  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erd\H{o}s-R\'{e}nyi graph with edge probability $p$ is $\# P$ hard is the dynamic model with changes in security in each time step.
 \end{corollary}
 \begin{proof}
   We can reduce the Two Terminal Problem to the Dynamic Epidemic Probability Problem, where the probabilities are fixed to represent $Pr$ from the Two Terminal Problem. Using the same derivation as before, we can show that the dynamic version of the Epidemic Probability Problem is $\# P$ hard.
@@ -287,12 +285,12 @@ The complexity result can be extended to the dynamic case when the protection fo
 There are a number of related problems which are computationally hard. Actually, most interesting quantities related to the epidemic problem are NP-hard to compute. For example, computing the expected number of infected nodes is NP-hard.
 
 \begin{theorem}
-  Computing the expected number of infected nodes on the an epidemic network with protections $q_i$ for $i \in \{1, \ldots, n\}$ is $\# P$ hard.
+  Computing the expected number of infected nodes on the an epidemic network with security $q_i$ for $i \in \{1, \ldots, n\}$ is $\# P$ hard.
 \end{theorem}
 \begin{proof}
   We shall reduce the Epidemic Probability Problem to the Epidemic Expected Infection Problem (the problem of computing the expected number of infected nodes in an epidemic network).
 
-  Suppose we have an instance of the Epidemic Probability Problem. Now select a node $u \in V$ and create a new node $v \not \in V$ which will be attached to the graph. Now, create an edge $e(u,v)$ between $u$ and $v$ and set $v$'s protection to $q = 0$. Now, if $u$ is ever infected, then $v$ will also be infected.
+  Suppose we have an instance of the Epidemic Probability Problem. Now select a node $u \in V$ and create a new node $v \not \in V$ which will be attached to the graph. Now, create an edge $e(u,v)$ between $u$ and $v$ and set $v$'s security to $q = 0$. Now, if $u$ is ever infected, then $v$ will also be infected.
 
   It is clear that the expected number of infected nodes in this new graph increases by $P_i(u)$, the probability of $u$ becoming infected. Thus, finding the expected number of infected nodes is at least as hard as finding the probability of infection of a node. Thus, we see that the Epidemic Expected Infection Problem is harder than the Epidemic Probability Problem, which is in $\# P$.
 \end{proof}
@@ -320,14 +318,14 @@ There exists a naive generalization of Karger's FPTAS to the problem of computin
 First we define the problem of computing infection probabilities for multiple sources and multiple sinks.
 
 \begin{definition}
-    We will be given a graph $G = (V,E)$ and some function of protections $Q: E \to [0,1)$ which defines the protection $q_v$ inherent for the infection to move down edge $(u,v)$. The \emph{MSMSIP problem} is to find the probability of infection $P_i(u)$ for each node $i \in V \setminus u$ for all possible starting nodes $u \in V$.
+    We will be given a graph $G = (V,E)$ and some function of security $Q: E \to [0,1)$ which defines the security $q_v$ inherent for the infection to move down edge $(u,v)$. The \emph{MSMSIP problem} is to find the probability of infection $P_i(u)$ for each node $i \in V \setminus u$ for all possible starting nodes $u \in V$.
   \end{definition}
 
   Since we have shown the single-source single-sink infection probability problem to be $\# P$, it must be the case that MSMSIP is also $\# P$ because solving the MSMSIP implies that you have also solved the singular problem.
 
 \subsection{Summary of Karger's FPTAS for the All Terminal Problem}
 
-Karger solves the all terminal problem using a combination of a minimum cut finding algorithm and the Monte Carlo scheme. If $\tilde{P}_i$ is large, then it is sufficient to use the Monte Carlo algorithm because of the time bound of $O(\log n / (\epsilon^2 \tilde{P}))$. However, when $\tilde{P}$ is small and arbitrarily close to zero, the Monte Carlo simulation requires a prohibitive number of trials. Therefore, Karger develops another polynomial time algorithm which can be used when $\tilde{P} < 1/n^4$ (for explanation, we assume that all nodes have protection rate $q$, but this can be extended to each node having different protection rates without much difficulty). When this is the case, we can find cuts that are small enough, and these cuts will provide an easy way to estimate the probability of failure.
+Karger solves the all terminal problem using a combination of a minimum cut finding algorithm and the Monte Carlo scheme. If $\tilde{P}_i$ is large, then it is sufficient to use the Monte Carlo algorithm because of the time bound of $O(\log n / (\epsilon^2 \tilde{P}))$. However, when $\tilde{P}$ is small and arbitrarily close to zero, the Monte Carlo simulation requires a prohibitive number of trials. Therefore, Karger develops another polynomial time algorithm which can be used when $\tilde{P} < 1/n^4$ (for explanation, we assume that all nodes have security rate $q$, but this can be extended to each node having different security rates without much difficulty). When this is the case, we can find cuts that are small enough, and these cuts will provide an easy way to estimate the probability of failure.
 
 To make this argument more rigorous, we shall develop the theory more formally. Notice that graphs become disconnected exactly when all the edges in a cut fail. Thus, it is clear that if each edge $i$ in a cut fails with probability $q_i$, then the cut will fail with probability $\prod_i q_i = q^c$. Karger proves the following useful lemma.
 
@@ -385,17 +383,20 @@ Therefore, the total runtime for finding all min cuts is $O(n^2 \ln^2 n + n^2 \l
 
 In this paper, we presented a model of infection and characterized the cost of anarchy for different regimes. In addition, we ran simulations of the static and dynamic versions of the model to examined various properties of the resulting network.
 
-We found a number of interesting problems related to our model were computationally intractable. For example, computing the probability of infection given a vector of protections for each node is NP-hard. However, we developed a polynomial time approximation scheme which can compute infection probabilities within an arbitrarily small range of their true values.
+We found a number of interesting problems related to our model were computationally intractable. For example, computing the probability of infection given a vector of security for each node is NP-hard. However, we developed a polynomial time approximation scheme which can compute infection probabilities within an arbitrarily small range of their true values.
 
-Our results show that purely selfish play on our model is worst (in comparison to the social optimal) when the network has an intermediate level of connectivity. Moreover, protection is ineffectual when the graph is disconnected, but has a large impact on slowing the spread of a disease when the graph is connected.·
+Our results show that purely selfish play on our model is worst (in comparison to the social optimal) when the network has an intermediate level of connectivity. Moreover, security investments make no difference when the graph is disconnected, but has a large impact on slowing the spread of a disease when the graph is connected.
 
-This paper introduces a number of techniques for analyzing infection spread in networks. Our characterization of infection spread on Erdos Renyi graphs hopefully provides clearer insight into how infections spread in physical systems.
-
-\section{Acknowl
+This paper introduces a number of techniques for analyzing infection spread in networks. Our characterization of infection spread on Erd\H{o}s-R\'{e}nyi graphs hopefully provides clearer insight into how infections spread in physical systems.
 
 \newpage
 
 \begin{thebibliography}{9}
+
+  \bibitem{acemoglu13}
+    D. Acemoglu, A. Malekian, and A. Ozdaglar.
+    Network Security and Contagion.
+    \emph{Unpublished}, 2013.
 
   \bibitem{ball80}
     M. Ball.
@@ -421,6 +422,16 @@ This paper introduces a number of techniques for analyzing infection spread in n
     D. Kempe, J. Kleinberg, and E. Tardos.
     Maximizing the Spread of Inﬂuence Through a Social Network.
     \emph{SIGKDD}, 2003.
+
+  \bibitem{newman10}
+    M. Newman.
+    Networks: An Introduction.
+    \emph{Oxford University Press}, 2010.
+
+  \bibitem{jackson08}
+    M. Jackson.
+    Social and Economic Networks.
+    \emph{Princeton University Press}, 2008.
 
 
 \end{thebibliography}
