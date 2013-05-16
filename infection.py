@@ -1,8 +1,9 @@
 import random
-import history
+import history as hist
 import sets
 import verbose
 from infection_mechanism import *
+from protection_mechanism import *
 
 # This is a class which plays the game of spreading an infection throughout the
 # graph.
@@ -31,9 +32,10 @@ class Infection:
         self._set_history(history)
         self.verbose = verbose.Verbose(debug)
 
-    def run_infection(self, start_node = "random", max_iterations = 200):
+    def run_infection(self, start_node = "random", max_iterations = 50):
         self.start_infection(start_node)
         while len(self.frontier) >= 0 and self.current_iteration < max_iterations:
+            #print self.current_iteration
             self.next_iteration()
 
     def start_infection(self, start_node = "random"):
@@ -52,7 +54,8 @@ class Infection:
         # iteration
         if self.protection_mechanism:
             self.protection_list = self.protection_mechanism.next_iteration()
-            self.history.change_protection(self.protection_list)
+            if self.history:
+                self.history.change_protection(self.protection_list)
 
         # Now start infecting with the infection mechanism
         newly_infected_nodes = set(self.infection_mechanism.next_iteration())
@@ -102,7 +105,7 @@ class Infection:
     def _set_history(self, history):
         self.history = history
         if self.history:
-            self.history = history.History(self, self.graph.adjacency_matrix)
+            self.history = hist.History(self, self.graph.adjacency_matrix)
 
     # defaults to basic, unless specified to dynamic
     def _set_infection_mechanism(self, infection_mechanism):

@@ -1,5 +1,6 @@
 
 import scipy
+import scipy.optimize as opt
 # Utility function class. Default uses a polynomial cost function using the
 # default of the PolynomialCostFunction class.
 class UtilityFunction:
@@ -16,12 +17,12 @@ class UtilityFunction:
 
 
     def calculate_negative_utility(self, infection_probability, protection):
-        return -1.0 * calculate_utility(self, infection_probability, protection)
+        return -1.0 * self.calculate_utility(infection_probability, protection)
 
-    def maximize(self, probability_function):
+    def maximize(self, func):
         #Use minimize negative utility for q in [0, 1] to maximize utility
-        optimizationResult = scipy.optimize.minimize_scalar(lambda x: self.calculate_negative_utility(probability_function(x), x), bounds=(0,1), method='Bounded')
-        return optimizationResult.x
+        optimizationResult = opt.fminbound(func, 0,1)
+        return optimizationResult
 
     
 
@@ -38,7 +39,7 @@ class CostFunction:
 # Polynomial cost function. The default cost function is just c(q) = q^2.
 class PolynomialCostFunction(CostFunction):
     def __init__(self, function_type = "polynomial"):
-        super(PolynomialCostFunction, self).__init__(function_type)
+        #super(PolynomialCostFunction, self).__init__(function_type)
         self.coefficients = [0, 0, 0.5]
 
     def set_coefficients(self, coefficients):
