@@ -23,7 +23,7 @@
 
 \section{Introduction}
 
-As epidemics spread on computer, disease propagation, and financial networks, agents in the network often undertake costly investments in security to protect themselves from infection. However, these investments are often imperfect and typically succeed with some probability less than one. Furthermore, the cost of a security investment and its probability of success both increase with the chosen level of security. Thus agents face a tradeoff between choosing high investment in security to minimize infection probability and choosing low investment to minimize cost. Given the easily definable utility functions of agents, it is appropriate to model the choice of security as a game on a network.
+As epidemics spread on computer, epidemiological, and financial networks, agents in the network often undertake costly investments in security to protect themselves from infection. However, these investments are often imperfect and typically succeed with some probability less than one. Furthermore, the cost of a security investment and its probability of success both increase with the chosen level of security. Thus agents face a tradeoff between choosing high investment in security to minimize infection probability and choosing low investment to minimize cost. Given the easily definable utility functions of agents, it is appropriate to model the choice of security as a game on a network.
 
 In this paper, we extend the game theoretic framework developed in unpublished work from Acemoglu et al. to random graph models. We spend the majority of the paper considering the static model of infection in which each agent chooses a security level once before epidemic propagation. In the static infection model, we specifically concern ourselves with characterizing the difference in infection rates between the Nash equilibrium and the social optimum. We also discuss some simulation results on the dynamic model, in which agents observe the infection state of their $k$-neighborhood at each timestep and update their security investments accordingly. Finally, we present some results on the intractability of computing infection probabilities exactly, and we provide a fully polynomial time approximation scheme for arbitrarily small $\epsilon$.
 
@@ -200,7 +200,7 @@ The network effect starts to increase to something significant by $q = 0.5$, the
   \label{network_effects_np5.fig}
 \end{figure}
 
-\subsection{Simulating the Dynamic Model}
+\subsection{Dynamic Infection Model}
 
 We analyze agents dynamically choosing security. Similar to the SIR model introduced in class, we present the notion of attacking and curing nodes as agents choose their level of security at each timestep. We begin by using an Erd\H{o}s-R\'{e}nyi graph. However, in some applications, as with the case with the spread of infectious disease, the Barbasi-Albert preferential attachment model may be preferable for a higher clustering coefficient and may better mimic the choice of selecting a new partner. In the preferential attachment model with a parameter $k$, we start with $k$ nodes that are completely connected. For each node added to the graph, we add $k$ edges, weighted by the degrees of the current nodes in the graph.
 
@@ -214,7 +214,9 @@ For dynamic simulations, we use a default cost function of $c(q) = q^2$. Given t
 \end{equation}
 where $P_n$ is the probability of the infection reaching its neighbor. For a scope of 1, because the agent can only see a certain scope through the graph, it assumes that if it is infected, it will be no longer infected by the next time step by the cure probability and that if it is not infected, it will be infected with a probability of the attack probability. For larger scopes, the node also uses information about its neighbor's neighbors to determine the probability that infection will reach it.
 
-\subsection{Dynamic Simulation Results}
+\subsection{Simulating the Dynamic Model}
+
+We consider the real-world application of the spread of HIV in sub-Saharan Africa. We choose to use the prevalence of HIV as the attack probability, as a measure of the invasiveness of HIV. We use the probability of death from HIV as the cure probability; because there is no current actual cure for HIV, we choose the probability of death as a measure of how often an infected node is removed from the graph. From online HIV statistics, we decide to use $\alpha=0.05$ and $\gamma=0.06$, with a preferential attachment model, and a scope of $1$. Simulations were run for different attack and cure probabilities for either an Erdos-Reyni graph with $n=100$ and $p=0.05$, or a preferential attachment model with $n=100$ and $k=5$. We assume a scope of $1$.
 
 \section{Computational Intractibility Results}
 
@@ -367,6 +369,8 @@ We found a number of interesting problems related to our model were computationa
 Our results show that purely selfish play on our model is worst (in comparison to the social optimal) when the network has an intermediate level of connectivity. Moreover, protection is ineffectual when the graph is disconnected, but has a large impact on slowing the spread of a disease when the graph is connected.·
 
 This paper introduces a number of techniques for analyzing infection spread in networks. Our characterization of infection spread on Erdos Renyi graphs hopefully provides clearer insight into how infections spread in physical systems.
+
+\section{Acknowl
 
 \newpage
 
