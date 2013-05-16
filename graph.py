@@ -13,8 +13,21 @@ class Graph:
     # in the graph are matching. Note that it doesn't do a full check, but it
     # only checks the outside of the matrix.
     def _check_matching_sizes(self):
+<<<<<<< HEAD
+        if (len(self.adjacency_matrix) != self.num_nodes or
+            len(self.protection_list) != self.num_nodes):
+            raise Exception("Adjacency and Protection matrix are not the same size")
+
+    def degree_list(self):
+        return [sum(self.adjacency_matrix.matrix[i]) for i in range(len(self.num_nodes))]
+
+class AdjacencyMatrix(Matrix):
+    def set_edge(self, node_1, node_2, value = 1):
+        super(Matrix, self).set_edge(node_1, node_2, value)
+=======
         if (len(self.adjacency_matrix) != self.num_nodes):
             raise Exception("Adjacency matrix is not the correct size")
+>>>>>>> 960c014d36a8afc35a677a3c0aa468c8e237d767
 
 # Base implementation of the a matrix. You can set the neighbors of a particular
 # node, or the edge between two nodes.
