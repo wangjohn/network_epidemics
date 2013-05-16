@@ -224,4 +224,14 @@ Since the Recursive Contraction Algorithm should find all min cuts in $\ln^2 n$ 
 
 Therefore, the total runtime for finding all min cuts is $O(n^2 \ln^2 n + n^2 \ln^3 n) = O(n^2 \ln^3 n)$. Using these for the FPTAS will complete the scheme. Thus, the final runtime of the RPTAS for MSMSIP is $O(c n^4 / \epsilon^3)$. This is an improvement over the $O(c n^6 / \epsilon^3)$ naive algorithm presented previously.
 
+\section{Conclusion}
+
+In this paper, we presented a model of infection and characterized the cost of anarchy for different regimes. In addition, we ran simulations of the static and dynamic versions of the model to examined various properties of the resulting network.
+
+We found a number of interesting problems related to our model were computationally intractable. For example, computing the probability of infection given a vector of protections for each node is NP-hard. However, we developed a polynomial time approximation scheme which can compute infection probabilities within an arbitrarily small range of their true values.
+
+Our results show that purely selfish play on our model is worst (in comparison to the social optimal) when the network has an intermediate level of connectivity. Moreover, protection is ineffectual when the graph is disconnected, but has a large impact on slowing the spread of a disease when the graph is connected. 
+
+This paper introduces a number of techniques for analyzing infection spread in networks. Our characterization of infection spread on Erdos Renyi graphs hopefully provides clearer insight into how infections spread in physical systems.
+
 \end{document}
