@@ -21,13 +21,26 @@
 
   \maketitle
 
+\section{Introduction}
+
+\section{Static Infection Model}
+
+Although the modelling infection on the network dynamically with a model such as SIR is more representative of real epidemics, such a model is intractable for the purpose of theoretical reasoning. In this section, we utilize the static model of infection as per the model described in unpublished work by Acemoglu et al. (2013). Specifically, we consider the network security game on an Erd\H{o}s-R\'{e}nyi random graphs. We characterize the difference in network infection rates between the case of actions chosen by rational utility-maximizing agents and the case of actions chosen to maximize total social welfare. This difference is significant, as it can be readily interpreted as the cost of anarchy in a society modelled by a random graph. 
+
+\subsection{Game Definition}
+
+The game proceeds a network $A$ drawn from the set of Erd\H{o}s-R\'{e}nyi random graphs on $n$ nodes with edge probability $p$. Before the network is sampled from the ER graph distribution, each agent makes a security investment $q_i \in [0, 1]$, knowing only the values of $n$ and $p$, so that agent $i$ is immunized against infection at the beginning of the game with probability $q_i$. Agent $i$ incurs a cost $c(q_i)$ by choosing security level $q_i$, and we define all agents to have identical cost functions. A random attacker then chooses one of the $n$ agents uniformly at random and exposes this agent to infection. If the chosen agent $i$ is not immunized, the infection spreads to all susceptible agents on the component of agent $i$. The utility function of agent $i$ is given by:
+\begin{eqnarray}
+	u_i(q_i) = -\textbf{P}(A, \textbf{q}) - c(q_i)
+\end{eqnarray}• 
+We define $\textbf$
+The individual is not given any idea of what his position in the graph will be, but he does know the probability of edge creation $p$.
+
 \section{Simulation Results}
 
 In this section, we provide results from computational simulations of our model. The graphs that we simulate on are created using the Erdos-Renyi mechanism with the number of nodes fixed at $n = 100$. Fixing the number of nodes reduces the number of parameters that can vary.
 
-\subsection{Simulating the Non-Dynamic Model}
-
-To begin, we present results from simulating the non-dynamic model. In this case, each individual chooses his protection $q \in [0,1)$ before the game begins and is not allowed to change his choice as the game proceeds. The individual is not given any idea of what his position in the graph will be, but he does know the probability of edge creation $p$.
+\subsection{Simulating the Static Model}
 
   Solving for a mixed strategy Nash Equilibrium in this context is $PPAD$ complete.\footnote{\url{http://www.cs.berkeley.edu/~christos/papers/cacmDGP-2.pdf}} This implies that for all practical purposes, solving for a Nash Equilibrium is computationally intractable, although little is known about the actual complexity of $PPAD$ in relation to $P$ and $NP$.\footnote{\url{http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=4031362}} 
 
@@ -108,10 +121,10 @@ The reduction can be seen by introducing a known $\# P$ problem called the Two T
 
 Note that in the Two Terminal Problem, each edge $e \in E$ has some probability of failure $p_e \in [0,1]$ as defined by the function $Pr$.
 
-Showing the difficulty of the computation of $\tilde{P}_i$ in the non-dynamic model is now as simple as showing a reduction of the Two Terminal Problem, since it is $\# P$ complete as shown by Ball (1980).\footnote{\url{http://onlinelibrary.wiley.com/doi/10.1002/net.3230100206/pdf}}
+Showing the difficulty of the computation of $\tilde{P}_i$ in the static model is now as simple as showing a reduction of the Two Terminal Problem, since it is $\# P$ complete as shown by Ball (1980).\footnote{\url{http://onlinelibrary.wiley.com/doi/10.1002/net.3230100206/pdf}}
 
 \begin{theorem}
-  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard in the non-dynamic model.
+  Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard in the static model.
 \end{theorem}
 \begin{proof}
   We shall show that every instance of the Two Terminal Problem is an instance of the Epidemic Probability Problem (what we shall call the problem of computing $\tilde{P}_i$ in our model).
@@ -126,7 +139,7 @@ Showing the difficulty of the computation of $\tilde{P}_i$ in the non-dynamic mo
   Thus, we have shown that the Two Terminal Terminal problem can be reduced in polynomial time to the Epidemic Probability Problem, which shows that the Epidemic Probability Problem is at least as hard as the Two Terminal Problem (which is $\# P$ hard).
 \end{proof}
 
-The complexity result can be extended to the dynamic case when the protection for each node potentially changes. This means that for both the non-dynamic and the dynamic model, the computation of $\tilde{P}_i$ is computationally intractable.
+The complexity result can be extended to the dynamic case when the protection for each node potentially changes. This means that for both the static and the dynamic model, the computation of $\tilde{P}_i$ is computationally intractable.
 
 \begin{corollary}
   Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard is the dynamic model with changes in protection in each time step.
