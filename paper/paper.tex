@@ -23,18 +23,107 @@
 
 \section{Introduction}
 
+Infection on networks 
+
 \section{Static Infection Model}
 
-Although the modelling infection on the network dynamically with a model such as SIR is more representative of real epidemics, such a model is intractable for the purpose of theoretical reasoning. In this section, we utilize the static model of infection as per the model described in unpublished work by Acemoglu et al. (2013). Specifically, we consider the network security game on an Erd\H{o}s-R\'{e}nyi random graphs. We characterize the difference in network infection rates between the case of actions chosen by rational utility-maximizing agents and the case of actions chosen to maximize total social welfare. This difference is significant, as it can be readily interpreted as the cost of anarchy in a society modelled by a random graph. 
+Althoug modeling infection on the network dynamically with a model such as SIR is more representative of real epidemics, such a model is intractable for the purpose of theoretical reasoning. In this section, we utilize the static model of infection as described in unpublished work by Acemoglu et al. (2013). Specifically, we apply the network security game model to Erd\H{o}s-R\'{e}nyi random graphs. We characterize the difference in network infection rates between the case of actions chosen by rational utility-maximizing agents and the case of actions chosen to maximize total social welfare. This difference is significant, as it can be readily interpreted as the cost of anarchy in a society with interactions modeled by a random graph. 
 
 \subsection{Game Definition}
 
-The game proceeds a network $A$ drawn from the set of Erd\H{o}s-R\'{e}nyi random graphs on $n$ nodes with edge probability $p$. Before the network is sampled from the ER graph distribution, each agent makes a security investment $q_i \in [0, 1]$, knowing only the values of $n$ and $p$, so that agent $i$ is immunized against infection at the beginning of the game with probability $q_i$. Agent $i$ incurs a cost $c(q_i)$ by choosing security level $q_i$, and we define all agents to have identical cost functions. A random attacker then chooses one of the $n$ agents uniformly at random and exposes this agent to infection. If the chosen agent $i$ is not immunized, the infection spreads to all susceptible agents on the component of agent $i$. The utility function of agent $i$ is given by:
+The game proceeds on a network $A$ drawn from the set of Erd\H{o}s-R\'{e}nyi random graphs on $n$ nodes with edge probability $p$. Before the network is sampled from the ER graph distribution, each agent makes a security investment $q_i \in [0, 1]$, knowing only the values of $n$ and $p$, such that agent $i$ is immunized against infection at the beginning of the game with probability $q_i$. Agent $i$ incurs a cost $c(q_i)$ by choosing security level $q_i$, and we define all agents to have identical cost functions that are positive, strictly increasing, and strictly convex. 
+
+A random attacker then chooses one of the $n$ agents uniformly at random and exposes this agent to infection. If the chosen agent $i$ is not immunized, the infection spreads to all susceptible agents on the component of agent $i$. The utility function of agent $i$ is given by:
 \begin{eqnarray}
 	u_i(q_i) = -\textbf{P}(A, \textbf{q}) - c(q_i)
-\end{eqnarray}• 
-We define $\textbf$
-The individual is not given any idea of what his position in the graph will be, but he does know the probability of edge creation $p$.
+\end{eqnarray} 
+We define $\tilde{\textbf{P}}(A,q_{-i})$ to be the probability that agent $i$ is exposed to infection given that all other agents play security profile $q_{-i}$. Then, using a result from Acemoglu et al., we can rewrite the utility function as:
+\begin{eqnarray}
+	u_i(q_i) = -(1-q_{i})\tilde{\textbf{P}}(A,q_{-i}) - c(q_i)
+\end{eqnarray}
+Next, we define social welfare $W(\textbf{q})$ to be the sum of the utilities of all agents, namely:
+\begin{eqnarray}
+	W(\textbf{q}) = \sum\limits_{i \in A} u_i(q_i) = \sum\limits_{i \in A}  -(1-q_{i})\tilde{\textbf{P}}(A,q_{-i}) - c(q_i)
+\end{eqnarray}
+In the case of a Nash equilibrium, each agent chooses $q_i$ to maximize his utility function given that the remaining agents collectively play $q_{-i}$. In the case of the social optimum, each agent chooses $q_i$ to maximize social welfare given $q_{-i}$.
+
+\subsection{Erd\H{o}s-R\'{e}nyi Framework}
+
+As we will discuss later, computing infection probabilities and equilibria is not computationally feasible for general networks. However, Erd\H{o}s-R\'{e}nyi random graphs are a subset of a class of networks defined by Acemoglu et al. termed symmetric networks, whose properties we can exploit to allow computation of equilibria. A random network $A$ is defined as a symmetric network if for any permutation of the vertices $\pi : V \rightarrow V$, $\pi(A)$ has the same distribution as $A$. Clearly, Erd\H{o}s-R\'{e}nyi graphs belong to this category of networks. We will utilize the following theorem Acemoglu et al. that characterizes equilibria in symmetric networks.
+\begin{theorem}
+	Suppose all agents have positive, increasing, and convex cost functions. Then, on a symmetric network, there exist a unique symmetric equilibrium profile $q^e$ and a unique symmetric social optimum $q^s$, and $q^e \leq q^s$.
+\end{theorem}
+Next, we consider the importance of phase transitions in the spread of infection on the network. We recall that there are three significant phases in an ER graph - in Phase I, $p < \frac{1}{n}$, in Phase II, $\frac{1}{n} < p < \frac{\log{n}}{n}$, and in Phase III, $p >  \frac{\log{n}}{n}$. The transition between Phase I and Phase II corresponds to the emergence of a giant component, and the transition between Phase II and Phase III corresponds to the vanishing of all other components. The first phase transition is very important in our analysis, since the emergence of a giant component yields a transition to a positive probability of infection. The second phase transition, however, corresponds to a vanishing of a few leftover isolated nodes and small components. This transition does not affect the probability of infection in a discontinuous manner, and therefore we model the phases of the network simply as subcritical (Phase I) and supercritical (Phases II and III).
+
+\subsection{Equilibrium and Social Optimum}
+
+First, we consider the Nash equilibrium and social optimum in the subcritical case, i.e. when there exists no giant component. Since $qn$ of the agents are immunized at the beginning of the game, the effective size of the remaining network is $n(1-q)$.Therefore, the network exists in the subcritical phase for $(n(1-q)-1)p < 1$. Let $S(q, n)$ denote the expected size of the component of a randomly chosen node. The following equation is adapted from Equation (4.19) in Jackson, derived using a generating function argument.
+\begin{eqnarray}
+	S(q, n) = 1 + \frac{1}{1 - (n(1-q)-1)p}
+\end{eqnarray}
+The expected probability that infection reaches any node is given by $\frac{S(q, n)}{n}$. Then, for large $n$, we have $\tilde{\textbf{P}}(A,q_{-i}) \rightarrow 0$. Thus, the utility and social welfare functions reduce to:
+\begin{equation}
+	u_i(q_i) = -c(q_i)
+\end{equation}
+\begin{equation}
+	W(q) = -nc(q)
+\end{equation}
+Maximizing the left-hand sides for both of the equations above gives us $q^e = q^s = 0$ for the subcritical case. 
+
+Next, we consider the supercritical case, i.e. when a giant component exists. The probability of infection on a component smaller than the giant component is vanishingly small for large $n$, so we shall strict our attention to infection on the giant component. The probability of exposure of agent $i$ to infection in the supercritical case is the probability that the initial attack is delivered to a node in the giant component and that agent $i$ is located in the giant component. Since each of the above events occurs with probability $s(q, n)$, we can write the probability of exposure to infection as $\tilde{\textbf{P}}(A,q_{-i}) = s(q, n)^2$, where $s(q, n)$ is the size of the giant component defined as a fraction of the total number of nodes. We characterize $s(q, n)$ by adapting equation 12.15 from Newman to our model:
+\begin{equation}
+	1 - s = e^{-(n(1-q)-1)ps}
+\end{equation}
+Computing an analytical solution to this equation is extremely difficult, so we will determine $s(q, n)$ numerically. 
+
+Now, we will determine the Nash equilibrium and social optimum in the supercritical phase. We can write the utility function of agent $i$ as:
+\begin{equation}
+	u_i(q_i) = -(1-q_i)s(q_{-i},n)^2 - c(q_i)
+\end{equation}
+Differentiating both sides with respect to $q_i$ to maximize, we obtain:
+\begin{equation}
+	\frac{\partial u_i}{\partial q_i} = s(q_{-i},n)^2 - c'(q_i) = 0
+\end{equation}
+Invoking Theorem 1, we note that in equilibrium, $q^e = q_i = q_{-i}$, so our equilibrium is given by:
+\begin{equation}
+	c'(q^e) = s(q^e, n)^2
+\end{equation}
+The social welfare, which we know from Theorem 1 to be achieved by a symmetric social optimum profile, is given by:
+\begin{equation}
+	W(q) = -n(1-q)s(q,n)^2 - nc(q)
+\end{equation}
+Since we do not have a convenient closed-form expression for $s'(q, n)$, we express $q^s$ as:
+\begin{equation}
+	q^s = \arg\max\limits_{q\in[0,1]}\{-n(1-q)s(q,n)^2 - nc(q)\}
+\end{equation}
+Calculation of both $q^e$ and $q^s$ from equations (10) and (12) is performed numerically.
+\subsection{Infection Rates and the Cost of Anarchy}
+We define the infection rate $I(q)$ to be the expected fraction of infected nodes when all nodes play security profile $q$. The cost of anarchy is defined to be $I(q^e) - I(q^s)$, which can be intuitively regarded as the excess infection rate induced by a society of selfish utility optimizers relative to a society of agents governed by a central social welfare optimizer. Security difference is simply defined as $q^s - q^e$. 
+
+In this section, we present numerical results on the cost of anarchy and security difference as a function of the edge probability $p$ for various cost functions. Figures are shown for $n=10^8$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=6in]{cost_of_anarchy_q^2.png}
+  \caption{Cost of Anarchy: $c(q) = q^2$}
+  \label{cost_of_anarchy_q^2.fig}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=6in]{cost_of_anarchy_sqrt(1-q^2).png}
+  \caption{Cost of Anarchy: $c(q) = \sqrt{1-q^2}$}
+  \label{cost_of_anarchy_sqrt(1-q^2).fig}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=6in]{cost_of_anarchy_-q-log(1-q).png}
+  \caption{Cost of Anarchy: $c(q) = -q - \log{1-q}$}
+  \label{cost_of_anarchy_-q-log(1-q).fig}
+\end{figure}
+
+For all cost functions, the cost of anarchy is exactly $0$ for subcritical probabilities, since $q^e = q^s = 0$. We also note that for $p > \frac{\log{n}}{n}$,  $\tilde{\textbf{P}}(A,q_{-i}) \rightarrow 1$, so the equilibrium and social optimum strategies converge again. Thus, it is in Phase II that the cost of anarchy is maximized. For several cost functions, the maximum cost of anarchy on a graph with $10^8$ nodes is achieved for $1<np<10$.
 
 \section{Simulation Results}
 
@@ -236,15 +325,5 @@ Now, it is clear how one can change the Recursive Contraction Algorithm to store
 Since the Recursive Contraction Algorithm should find all min cuts in $\ln^2 n$ trials, each pair of vertices should have the lowest weight min cut possible separating them left in the dictionary after $\ln^2 n$ trials. Putting each pair into the menu will require a runtime of at most $O \left( {n \choose 2} \ln^2 n \right) = O(n^2 \ln^2 n)$.
 
 Therefore, the total runtime for finding all min cuts is $O(n^2 \ln^2 n + n^2 \ln^3 n) = O(n^2 \ln^3 n)$. Using these for the FPTAS will complete the scheme. Thus, the final runtime of the RPTAS for MSMSIP is $O(c n^4 / \epsilon^3)$. This is an improvement over the $O(c n^6 / \epsilon^3)$ naive algorithm presented previously.
-
-\section{Conclusion}
-
-In this paper, we presented a model of infection and characterized the cost of anarchy for different regimes. In addition, we ran simulations of the static and dynamic versions of the model to examined various properties of the resulting network.
-
-We found a number of interesting problems related to our model were computationally intractable. For example, computing the probability of infection given a vector of protections for each node is NP-hard. However, we developed a polynomial time approximation scheme which can compute infection probabilities within an arbitrarily small range of their true values.
-
-Our results show that purely selfish play on our model is worst (in comparison to the social optimal) when the network has an intermediate level of connectivity. Moreover, protection is ineffectual when the graph is disconnected, but has a large impact on slowing the spread of a disease when the graph is connected. 
-
-This paper introduces a number of techniques for analyzing infection spread in networks. Our characterization of infection spread on Erdos Renyi graphs hopefully provides clearer insight into how infections spread in physical systems.
 
 \end{document}
