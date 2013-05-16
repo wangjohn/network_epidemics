@@ -100,23 +100,23 @@ Calculation of both $q^e$ and $q^s$ from equations (10) and (12) is performed nu
 \subsection{Infection Rates and the Cost of Anarchy}
 We define the infection rate $I(q)$ to be the expected fraction of infected nodes when all nodes play security profile $q$. The cost of anarchy is defined to be $I(q^e) - I(q^s)$, which can be intuitively regarded as the excess infection rate induced by a society of selfish utility optimizers relative to a society of agents governed by a central social welfare optimizer. Security difference is simply defined as $q^s - q^e$. 
 
-In this section, we present numerical results on the cost of anarchy and security difference as a function of the edge probability $p$ for various cost functions. Figures are shown for $n=10^8$.
+In this section, we present numerical results on the cost of anarchy and security difference as a function of the edge probability $p$ for various cost functions. Figures \ref{cost_of_anarchy_q^2.fig}, \ref{cost_of_anarchy_sqrt(1-q^2).fig}, and \ref{cost_of_anarchy_-q-log(1-q).fig} show simulation results for various cost functions when $n=10^8$.
 
-\begin{figure}[H]
+\begin{figure}[h!]
   \centering
   \includegraphics[width=6in]{cost_of_anarchy_q^2.png}
   \caption{Cost of Anarchy: $c(q) = q^2$}
   \label{cost_of_anarchy_q^2.fig}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h!]
   \centering
   \includegraphics[width=6in]{cost_of_anarchy_sqrt(1-q^2).png}
   \caption{Cost of Anarchy: $c(q) = \sqrt{1-q^2}$}
   \label{cost_of_anarchy_sqrt(1-q^2).fig}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h!]
   \centering
   \includegraphics[width=6in]{cost_of_anarchy_-q-log(1-q).png}
   \caption{Cost of Anarchy: $c(q) = -q - \log{1-q}$}
@@ -131,7 +131,7 @@ In this section, we provide results from computational simulations of our model.
 
 \subsection{Simulating the Static Model}
 
-  Solving for a mixed strategy Nash Equilibrium in this context is $PPAD$ complete.\footnote{\url{http://www.cs.berkeley.edu/~christos/papers/cacmDGP-2.pdf}} This implies that for all practical purposes, solving for a Nash Equilibrium is computationally intractable, although little is known about the actual complexity of $PPAD$ in relation to $P$ and $NP$.\footnote{\url{http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=4031362}} 
+Solving for a mixed strategy Nash Equilibrium in this context is $PPAD$ complete \cite{daskalakis08}. This implies that for all practical purposes, solving for a Nash Equilibrium is computationally intractable, although little is known about the actual complexity of $PPAD$ in relation to $P$ and $NP$ \cite{chen06}.
 
 Because we cannot compute the equilibrium vector of protections $\bar{q}$ where $q_i \in [0,1)$ is player $i$'s choice of protection, we can sweep along a grid of representative values for $\bar{q}$ and examine the game at each one of these values.
 
@@ -149,7 +149,7 @@ To examine the outcome of a contagion spreading on an Erdos Renyi graph with edg
   \item Compute the standard deviation of $\hat{P}$ by using standard techniques of computing standard deviations for a sample of random variables from a binomial distribution.
 \end{itemize}
 
-In fact, there are provable bounds on how good our Monte Carlo results are for the approximation of $\tilde{P}_i$, given by Karp and Luby (1985) for the All Terminal problem (but can easily be extended to our problem):\footnote{See \url{http://www.sciencedirect.com/science/article/pii/0885064X85900214} for the full proof.}
+In fact, there are provable bounds on how good our Monte Carlo results are for the approximation of $\tilde{P}_i$, given by Karp and Luby (1985) for the All Terminal problem (but can easily be extended to our problem). See \cite{karp-luby85} for the full proof.
 
 \begin{theorem}
   To estimate the probability $\tilde{P}_i$ for $i \in V \setminus u$ where $u \in V$ is the source node of the infection to within a multiplicative factor of $1 + \epsilon$ for all $\epsilon \in [0,1]$, it suffices to run the Monte Carlo algorithm for a number of trials given by:
@@ -166,7 +166,7 @@ We begin by presenting the average infection probability $\hat{P}$ when the edge
 
 The intuition behind this is clear. Since $np = 0.5 < 1$, the average size of a component is small, so the amount that the infection can spread is decreased. Thus, even for low protection rates, the infection cannot spread very far.
 
-\begin{figure}[H]
+\begin{figure}[h!]
   \centering
   \includegraphics[width=4in]{avg_prob_np05.png}
   \caption{Average Infection Rates with No Giant Component $np = 0.5 < 1$}
@@ -177,7 +177,7 @@ When the Erdos Renyi parameter predicts the presence of a giant component, the a
 
 As the protection rate increases, the average infection probability decreases almost linearly until about $q = 0.6$. Once $q = 0.6$, the positive externalities start to kick in and the average infection probability drops off more dramatically than the linear trend would predict. This can be attributed to the "network effect", or the extra benefit that everyone obtains from one person increasing their protection. Having higher $q$ will positively impact your neighbors because of the lower probability of you getting infected and thus transmitting to your neighbors. 
 
-\begin{figure}[H]
+\begin{figure}[h!]
   \centering
   \includegraphics[width=4in]{avg_prob_np5.png}
   \caption{Average Infection Rates with Giant Component $np = 5 > 1$}
@@ -191,16 +191,20 @@ However, you must have enough connections in order for this network effect to be
 
 The network effect starts to increase to something significant by $q = 0.5$, then falls off again after $q = 0.8$. The fall off in the network effect comes from the saturation of protection levels. After a certain point, the marginal benefit of extra protection starts to decrease because of the difficulty of actually spreading the infection.
 
-\begin{figure}[H]
+\begin{figure}[h!]
   \centering
   \includegraphics[width=4in]{network_effects_np5.png}
   \caption{Network Effect in a Giant Component ($np = 5$)}
   \label{network_effects_np5.fig}
 \end{figure}
 
+\section{Computational Intractibility Results}
+
+Many of the critical parts required to simulate interesting scenarios of our model are NP hard. Unfortunately, this makes providing a broad range of simulation results difficult. In this section, we show a number of problems are NP hard, but also develop a polynomial time approximation scheme for computing infection probabilities.
+
 \subsection{Computational Intractibility of $\tilde{P}_i$}
 
-Unfortunately, computing $\tilde{P}_i(A, q_{-i}, \Phi)$ in general for a graph which is not a tree is in $\# P$, which is as least as hard as $NP$. This makes computing $\tilde{P}$ computationally intractable.
+Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ in general for a graph which is not a tree is in $\# P$, which is as least as hard as $NP$. This makes computing $\tilde{P}$ computationally intractable.
 
 The reduction can be seen by introducing a known $\# P$ problem called the Two Terminal Problem.
 
@@ -210,7 +214,7 @@ The reduction can be seen by introducing a known $\# P$ problem called the Two T
 
 Note that in the Two Terminal Problem, each edge $e \in E$ has some probability of failure $p_e \in [0,1]$ as defined by the function $Pr$.
 
-Showing the difficulty of the computation of $\tilde{P}_i$ in the static model is now as simple as showing a reduction of the Two Terminal Problem, since it is $\# P$ complete as shown by Ball (1980).\footnote{\url{http://onlinelibrary.wiley.com/doi/10.1002/net.3230100206/pdf}}
+Showing the difficulty of the computation of $\tilde{P}_i$ in the static model is now as simple as showing a reduction of the Two Terminal Problem, since it is $\# P$ complete as shown by Ball (1980) \cite{ball80}.
 
 \begin{theorem}
   Computing $\tilde{P}_i(A, q_{-i}, \Phi)$ for all $i \in \{1, \ldots, n\}$ on an Erdos Renyi graph with edge probability $p$ is $\# P$ hard in the static model.
@@ -252,7 +256,17 @@ There are a number of related problems which are computationally hard. Actually,
   It is clear that the expected number of infected nodes in this new graph increases by $P_i(u)$, the probability of $u$ becoming infected. Thus, finding the expected number of infected nodes is at least as hard as finding the probability of infection of a node. Thus, we see that the Epidemic Expected Infection Problem is harder than the Epidemic Probability Problem, which is in $\# P$.
 \end{proof}
 
-\section{Fast FPTAS for Infection Probabilities}
+Even the attacker's choice of target, on a general graph, cannot be computed with efficiency.
+
+\begin{theorem}
+  Computing the node to attack in order to have the highest expected number of infected nodes is NP hard.
+\end{theorem}
+\begin{proof}
+  There is a direct bijection of this problem to the influence maximization problem, which has been shown to be NP hard by Kempe, Kleinberg, Tardos (2003) \cite{kempe-kleinberg-tardos03}.
+\end{proof}
+
+
+\subsection{Fast FPTAS for Infection Probabilities}
 
 Although the problem of solving for infection probabilities is $\# P$ hard, it is still possible to approximate the probabilities. In fact, Karger (1999) developed a Fully Polynomial Time Approximation Scheme (FPTAS) for solving the all terminal problem, which can be defined as follows: given a graph $G = (V,E)$ and a probability function on the edges $Pr: E \to [0,1]$ of the probability of any edge failing, find the probability that the entire graph remains connected after edge failures occur with probability $Pr(e)$ for each edge $e \in E$.
 
@@ -325,5 +339,47 @@ Now, it is clear how one can change the Recursive Contraction Algorithm to store
 Since the Recursive Contraction Algorithm should find all min cuts in $\ln^2 n$ trials, each pair of vertices should have the lowest weight min cut possible separating them left in the dictionary after $\ln^2 n$ trials. Putting each pair into the menu will require a runtime of at most $O \left( {n \choose 2} \ln^2 n \right) = O(n^2 \ln^2 n)$.
 
 Therefore, the total runtime for finding all min cuts is $O(n^2 \ln^2 n + n^2 \ln^3 n) = O(n^2 \ln^3 n)$. Using these for the FPTAS will complete the scheme. Thus, the final runtime of the RPTAS for MSMSIP is $O(c n^4 / \epsilon^3)$. This is an improvement over the $O(c n^6 / \epsilon^3)$ naive algorithm presented previously.
+
+\section{Conclusion}
+
+In this paper, we presented a model of infection and characterized the cost of anarchy for different regimes. In addition, we ran simulations of the static and dynamic versions of the model to examined various properties of the resulting network.
+
+We found a number of interesting problems related to our model were computationally intractable. For example, computing the probability of infection given a vector of protections for each node is NP-hard. However, we developed a polynomial time approximation scheme which can compute infection probabilities within an arbitrarily small range of their true values.
+
+Our results show that purely selfish play on our model is worst (in comparison to the social optimal) when the network has an intermediate level of connectivity. Moreover, protection is ineffectual when the graph is disconnected, but has a large impact on slowing the spread of a disease when the graph is connected.·
+
+This paper introduces a number of techniques for analyzing infection spread in networks. Our characterization of infection spread on Erdos Renyi graphs hopefully provides clearer insight into how infections spread in physical systems.
+
+\newpage
+
+\begin{thebibliography}{9}
+
+  \bibitem{ball80}
+    M. Ball.
+    Complexity of Network Reliability Computations.
+    \emph{Networks}, 1980.
+
+  \bibitem{chen06}
+    X. Chen and X. Deng.
+    Settling the Complexity of Two-Player Nash Equilibrium.
+    \emph{Foundations of Computer Science}, 2006.
+
+  \bibitem{daskalakis08}
+    C. Daskalakis, P. Goldberg, and C. Papadimitriou.
+    The Complexity of Computing a Nash Equilibrium.
+    \emph{SICOMP}, 2008.
+
+  \bibitem{karp-luby85}
+    R. Karp and M. Luby.
+    Monte-Carlo Algorithms for the Planar Multiterminal Network Reliability Problem.
+    \emph{Journal of Complexity}, 1985.
+
+  \bibitem{kempe-kleinberg-tardos03}
+    D. Kempe, J. Kleinberg, and E. Tardos.
+    Maximizing the Spread of Inﬂuence Through a Social Network.
+    \emph{SIGKDD}, 2003.
+
+
+\end{thebibliography}
 
 \end{document}
