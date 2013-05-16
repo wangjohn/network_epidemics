@@ -35,7 +35,7 @@ Although modeling infection on the network dynamically with a model such as SIR 
 
 The game proceeds on a network $A$ drawn from the set of Erd\H{o}s-R\'{e}nyi random graphs on $n$ nodes with edge probability $p$. Before the network is sampled from the ER graph distribution, each agent makes a security investment $q_i \in [0, 1]$, knowing only the values of $n$ and $p$, such that agent $i$ is immunized against infection at the beginning of the game with probability $q_i$. Agent $i$ incurs a cost $c(q_i)$ by choosing security level $q_i$, and we define all agents to have identical cost functions that are positive, strictly increasing, and strictly convex. 
 
-A random attacker then chooses one of the $n$ agents uniformly at random and exposes this agent to infection. If the chosen agent $i$ is not immunized, the infection spreads to all susceptible agents on the component of agent $i$. We define $\textbf{P}(A, \textbf{q})$ to be the probability of infection of an agent on random graph $A$ when the agents collectively play security profile $\textbf{q}$. The utility function of agent $i$ is given by:
+A random attacker then chooses one of the $n$ agents uniformly at random and exposes this agent to infection. If the chosen agent $i$ is not immunized, the infection spreads to all susceptible agents on the component of agent $i$. We define $\textbf{P}(A, \textbf{q})$ to be the probability of infection of agent $i$ on random graph $A$ when the agents collectively play security profile $\textbf{q}$. The utility function of agent $i$ is given by:
 \begin{eqnarray}
 	u_i(q_i) = -\textbf{P}(A, \textbf{q}) - c(q_i)
 \end{eqnarray} 
@@ -160,7 +160,7 @@ In fact, there are provable bounds on how good our Monte Carlo results are for t
   \end{eqnarray}
 \end{theorem}
 
-\subsection{Simulation Results}
+\subsection{Static Simulation Results}
 
 We use the above model to simulate results, with $n = 100$, $\gamma = 250$, and $\kappa = 100$. In order words, we generate $\kappa = 100$ random graphs for each set of Erdos Renyi parameters, then on each graph, we run $\gamma = 250$ distinct infections which each start at a random node. The results are then summarized for different protection rates of $q$.
 
@@ -199,6 +199,22 @@ The network effect starts to increase to something significant by $q = 0.5$, the
   \caption{Network Effect in a Giant Component ($np = 5$)}
   \label{network_effects_np5.fig}
 \end{figure}
+
+\subsection{Simulating the Dynamic Model}
+
+We analyze agents dynamically choosing security. Similar to the SIR model introduced in class, we present the notion of attacking and curing nodes as agents choose their level of security at each timestep. We begin by using an Erd\H{o}s-R\'{e}nyi graph. However, in some applications, as with the case with the spread of infectious disease, the Barbasi-Albert preferential attachment model may be preferable for a higher clustering coefficient and may better mimic the choice of selecting a new partner. In the preferential attachment model with a parameter $k$, we start with $k$ nodes that are completely connected. For each node added to the graph, we add $k$ edges, weighted by the degrees of the current nodes in the graph.
+
+Agents are fully informed of the attack and cure probabilities, as well as the security levels chosen by their neighbors in the previous timestep. The attack probability is equivalent to the infection rate $\alpha$ in the SIR model, i.e. the probability that a currently uninfected node will be infected at the next timestep. Similarly, the cure probability is analogous to the recovery rate $\gamma$, i.e. the probability that a currently infected node will no longer be infected at the next timestep.
+
+At each time step, each agent chooses its level of security based on the levels of security of its neighborhood from the previous round and the attack and cure probabilities. The neighborhood of a node is defined for a pre-determined scope, indicating how deep into the graph an agent can see. For example, a scope of $1$ indicates that  agent $i$ can only view the choices of its neighbors and a scope of $2$ means that it can also see the choices of its neighbor's neighbors.
+
+For dynamic simulations, we use a default cost function of $c(q) = q^2$. Given that the cure probability is $\gamma$ and the attack probability is $\alpha$, the probability that the infection reaches agent $i$ is:
+\begin{equation}
+	\tilde{\textbf{P}}(A,q_{-i}) = 1 - (1 - \gamma) \prod_{n \in N(i)}{(1-P_n)}
+\end{equation}
+where $P_n$ is the probability of the infection reaching its neighbor. For a scope of 1, because the agent can only see a certain scope through the graph, it assumes that if it is infected, it will be no longer infected by the next time step by the cure probability and that if it is not infected, it will be infected with a probability of the attack probability. For larger scopes, the node also uses information about its neighbor's neighbors to determine the probability that infection will reach it.
+
+\subsection{Dynamic Simulation Results}
 
 \section{Computational Intractibility Results}
 

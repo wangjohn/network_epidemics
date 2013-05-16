@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.5.16)  16 MAY 2013 12:04
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.5.16)  16 MAY 2013 12:38
 entering extended mode
 **C:/Users/bjain/Documents/MIT*Schoolwork/Spring*2013/14.15/network_epidemics/p
 aper/paper.tex
@@ -371,14 +371,14 @@ aper\paper.out")
 Package hyperref Warning: Glyph not defined in PD1 encoding,
 (hyperref)                removing `\H' on input line 52.
 
-[2] [3] <cost_of_anarchy_q^2.png, id=116, 1196.1931pt x 571.30681pt>
+[2] [3] <cost_of_anarchy_q^2.png, id=124, 1196.1931pt x 571.30681pt>
 File: cost_of_anarchy_q^2.png Graphic file (type png)
 
 <use cost_of_anarchy_q^2.png>
 Package pdftex.def Info: cost_of_anarchy_q^2.png used on input line 109.
 (pdftex.def)             Requested size: 433.62pt x 207.09123pt.
 
-<cost_of_anarchy_sqrt(1-q^2).png, id=117, 1196.1931pt x 571.30681pt>
+<cost_of_anarchy_sqrt(1-q^2).png, id=125, 1196.1931pt x 571.30681pt>
 File: cost_of_anarchy_sqrt(1-q^2).png Graphic file (type png)
 
 <use cost_of_anarchy_sqrt(1-q^2).png>
@@ -386,7 +386,7 @@ Package pdftex.def Info: cost_of_anarchy_sqrt(1-q^2).png used on input line 116
 .
 (pdftex.def)             Requested size: 433.62pt x 207.09123pt.
 
-<cost_of_anarchy_-q-log(1-q).png, id=118, 1196.1931pt x 571.30681pt>
+<cost_of_anarchy_-q-log(1-q).png, id=126, 1196.1931pt x 571.30681pt>
 File: cost_of_anarchy_-q-log(1-q).png Graphic file (type png)
 
 <use cost_of_anarchy_-q-log(1-q).png>
@@ -411,7 +411,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 
 [5 <C:/Users/bjain/Documents/MIT Schoolwork/Spring 2013/14.15/network_epidemics
 /paper/cost_of_anarchy_-q-log(1-q).png (PNG copy)>]
-<avg_prob_np05.png, id=136, 572.1375pt x 321.2pt>
+<avg_prob_np05.png, id=144, 572.1375pt x 321.2pt>
 File: avg_prob_np05.png Graphic file (type png)
  <use avg_prob_np05.png>
 Package pdftex.def Info: avg_prob_np05.png used on input line 173.
@@ -420,7 +420,7 @@ Package pdftex.def Info: avg_prob_np05.png used on input line 173.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<avg_prob_np5.png, id=138, 590.205pt x 321.2pt>
+<avg_prob_np5.png, id=146, 590.205pt x 321.2pt>
 File: avg_prob_np5.png Graphic file (type png)
  <use avg_prob_np5.png>
 Package pdftex.def Info: avg_prob_np5.png used on input line 184.
@@ -429,7 +429,7 @@ Package pdftex.def Info: avg_prob_np5.png used on input line 184.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[6] <network_effects_np5.png, id=150, 582.175pt x 321.2pt>
+[6] <network_effects_np5.png, id=158, 582.175pt x 321.2pt>
 File: network_effects_np5.png Graphic file (type png)
 
 <use network_effects_np5.png>
@@ -439,55 +439,55 @@ Package pdftex.def Info: network_effects_np5.png used on input line 198.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 207.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 207.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 207.
-
 [7 <C:/Users/bjain/Documents/MIT Schoolwork/Spring 2013/14.15/network_epidemics
 /paper/avg_prob_np05.png (PNG copy)> <C:/Users/bjain/Documents/MIT Schoolwork/S
-pring 2013/14.15/network_epidemics/paper/avg_prob_np5.png (PNG copy)>] [8 <C:/U
-sers/bjain/Documents/MIT Schoolwork/Spring 2013/14.15/network_epidemics/paper/n
-etwork_effects_np5.png (PNG copy)>] [9]
+pring 2013/14.15/network_epidemics/paper/avg_prob_np5.png (PNG copy)>]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 223.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `subscript' on input line 223.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 223.
+
+[8 <C:/Users/bjain/Documents/MIT Schoolwork/Spring 2013/14.15/network_epidemics
+/paper/network_effects_np5.png (PNG copy)>] [9] [10]
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 308.
+(amsmath)                 on input line 324.
 
-[10] [11]
+[11] [12]
 Missing character: There is no Â in font cmr10!
 Missing character: There is no · in font cmr10!
- [12]
+ [13]
 Missing character: There is no ï in font cmr10!
 Missing character: There is no ¬ in font cmr10!
 Missing character: There is no ‚ in font cmr10!
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 387.
- [13]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 387.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 403.
+ [14]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 403.
 
 ("C:\Users\bjain\Documents\MIT Schoolwork\Spring 2013\14.15\network_epidemics\p
 aper\paper.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 387.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 387.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 403.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 403.
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 8E523894484B1A39BF376E26C5DA5C46;1379.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 387.
+(rerunfilecheck)             Checksum: CE0C01988DAFCD489AFE0DDACE81E99E;1542.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 403.
  ) 
 Here is how much of TeX's memory you used:
- 6261 strings out of 493921
- 91362 string characters out of 3144876
+ 6267 strings out of 493921
+ 91442 string characters out of 3144876
  182352 words of memory out of 3000000
- 9434 multiletter control sequences out of 15000+200000
+ 9436 multiletter control sequences out of 15000+200000
  9988 words of font info for 36 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 29i,11n,32p,1084b,411s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,11n,32p,1084b,388s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
 :/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/
@@ -504,9 +504,9 @@ KTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Program Files (x86)/MiKTeX
 /fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/f
 onts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
 s/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on paper.pdf (13 pages, 345047 bytes).
+Output written on paper.pdf (14 pages, 348999 bytes).
 PDF statistics:
- 270 PDF objects out of 1000 (max. 8388607)
- 72 named destinations out of 1000 (max. 500000)
- 175 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 285 PDF objects out of 1000 (max. 8388607)
+ 76 named destinations out of 1000 (max. 500000)
+ 191 words of extra memory for PDF output out of 10000 (max. 10000000)
 
