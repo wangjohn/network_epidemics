@@ -204,19 +204,40 @@ The network effect starts to increase to something significant by $q = 0.5$, the
 
 We analyze agents dynamically choosing security. Similar to the SIR model introduced in class, we present the notion of attacking and curing nodes as agents choose their level of security at each timestep. We begin by using an Erd\H{o}s-R\'{e}nyi graph. However, in some applications, as with the case with the spread of infectious disease, the Barbasi-Albert preferential attachment model may be preferable for a higher clustering coefficient and may better mimic the choice of selecting a new partner. In the preferential attachment model with a parameter $k$, we start with $k$ nodes that are completely connected. For each node added to the graph, we add $k$ edges, weighted by the degrees of the current nodes in the graph.
 
-Agents are fully informed of the attack and cure probabilities, as well as the security levels chosen by their neighbors in the previous timestep. The attack probability is equivalent to the infection rate $\alpha$ in the SIR model, i.e. the probability that a currently uninfected node will be infected at the next timestep. Similarly, the cure probability is analogous to the recovery rate $\gamma$, i.e. the probability that a currently infected node will no longer be infected at the next timestep.
+Agents are fully informed of the attack and cure probabilities, as well as the security levels chosen by the nodes in their neighborhood in the previous timestep. The attack probability is equivalent to the infection rate $\alpha$ in the SIR model, i.e. the probability that a currently uninfected node will be infected at the next timestep. Similarly, the cure probability is analogous to the recovery rate $\gamma$, i.e. the probability that a currently infected node will no longer be infected at the next timestep.
 
 At each time step, each agent chooses its level of security based on the levels of security of its neighborhood from the previous round and the attack and cure probabilities. The neighborhood of a node is defined for a pre-determined scope, indicating how deep into the graph an agent can see. For example, a scope of $1$ indicates that  agent $i$ can only view the choices of its neighbors and a scope of $2$ means that it can also see the choices of its neighbor's neighbors.
 
-For dynamic simulations, we use a default cost function of $c(q) = q^2$. Given that the cure probability is $\gamma$ and the attack probability is $\alpha$, the probability that the infection reaches agent $i$ is:
+For dynamic simulations, we use a default cost function of $c(q) = q^2$. Given that the cure probability is $\gamma$ and the attack probability is $\alpha$, the probability $\tilde{\textbf{P}}(A,q_{-i})$, given the network $A$ and the security profile $q_{-i}$, that the infection reaches agent $i$ is:
 \begin{equation}
-	\tilde{\textbf{P}}(A,q_{-i}) = 1 - (1 - \gamma) \prod_{n \in N(i)}{(1-P_n)}
+	\tilde{\textbf{P}}(A,q_{-i}) = 1 - (1 - \alpha) \prod_{n \in N(i)}{(1-P_n)}
 \end{equation}
-where $P_n$ is the probability of the infection reaching its neighbor. For a scope of 1, because the agent can only see a certain scope through the graph, it assumes that if it is infected, it will be no longer infected by the next time step by the cure probability and that if it is not infected, it will be infected with a probability of the attack probability. For larger scopes, the node also uses information about its neighbor's neighbors to determine the probability that infection will reach it.
+where $P_n$ is the probability of the infection reaching its neighbor. For a scope of $1$, because the agent can only see a certain scope through the graph, it assumes that if it is infected, it will be no longer infected by the next time step by the cure probability and that if it is not infected, it will be infected with a probability of the attack probability. For larger scopes, the node also uses information about its neighbor's neighbors to determine the probability that infection will reach it.
 
 \subsection{Simulating the Dynamic Model}
 
 We consider the real-world application of the spread of HIV in sub-Saharan Africa. We choose to use the prevalence of HIV as the attack probability, as a measure of the invasiveness of HIV. We use the probability of death from HIV as the cure probability; because there is no current actual cure for HIV, we choose the probability of death as a measure of how often an infected node is removed from the graph. From online HIV statistics, we decide to use $\alpha=0.05$ and $\gamma=0.06$, with a preferential attachment model, and a scope of $1$. Simulations were run for different attack and cure probabilities for either an Erdos-Reyni graph with $n=100$ and $p=0.05$, or a preferential attachment model with $n=100$ and $k=5$. We assume a scope of $1$.
+
+We find that in the dynamic model, the initial choice of protection level for all of the nodes makes little difference in the resulting infection probability of the graph (Fig. \ref{fig:attack_cure}. Intuitively, this makes sense, since over many timesteps where players update their choice of protecti)on, it will converge to some relatively stable security profile, with changes from attacks and cures canceling. The results suggest that in the long-term, if attack and cure probabilities remain stable, a population of the graph will remain infected, the size of which depends on the choices of $\gamma$ and $\alpha$.
+
+We consider the real-world application of the spread of HIV in sub-Saharan Africa. We choose to use the prevalence of HIV as the attack probability, as a measure of the invasiveness of HIV. We use the probability of death from HIV as the cure probability; because there is no current actual cure for HIV, we choose the probability of death as a measure of how often an infected node is removed from the graph. From online HIV statistics, we decide to use $\alpha=0.05$ and $\gamma=0.06$, with a preferential attachment model, and a scope of $1$. Our results suggest that in the long-term, given stable $\alpha$ and $\gamma$, a proportion of the population will always remain infected (Fig. \ref{fig:hiv}). It may seem reasonable to vary the cure probability, given that, in application, a government agent may have more control over government spending for research for a cure or other means of removing infection from the graph, whereas $\alpha$ is more likely determined by some exogenous factor. We vary $\gamma$ while fixing $\alpha=0.05$ and find that, as would be expected, infection probability decreases with increased $\gamma$, suggesting that there may be some way to predictably control infection by varying $\gamma$.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=4in]{dynamic_er_attack_cure_model.jpg}
+  \includegraphics[width=4in]{dynamic_preferential_attachment_attack_cure_model.jpg}
+  \caption{Dynamic security profile selection in the attack/cure model on a) an Erd\H{o}s-R\'{e}nyi graph and b) on a Barbasi-Albert preferential attachment graph.}
+  \label{fig:attack_cure}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=4in]{varying_cure_for_dynamic_hiv_model.jpg}
+  \includegraphics[width=4in]{avg_infection_for_fixed_attack_probability.jpg}
+  \caption{$\alpha$ is fixed for the HIV model at $0.05$, with preferential attachment, and $\gamma$ is varied. a) shows the average infection probability for different initial protection levels and b) averages the infection probability over the different protection levels and compares to the choice of $\gamma$.}
+  \label{fig:hiv}
+\end{figure}
+
 
 \section{Computational Intractibility Results}
 
