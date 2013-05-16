@@ -23,17 +23,17 @@
 
 \section{Introduction}
 
-Infection on networks 
+As epidemics spread on computer, disease propagation, and financial networks, agents in the network often undertake costly investments in security to help protect themselves from infection. However, these investments are often imperfect and typically succeed with some finite probability less than one. Furthermore, the cost of a security investment and its probability of success both increase with the chosen level of security. Thus agents face a tradeoff between choosing high investment in security to minimize infection probability and choosing low investment in security to minimize cost. 
 
 \section{Static Infection Model}
-
+d
 Althoug modeling infection on the network dynamically with a model such as SIR is more representative of real epidemics, such a model is intractable for the purpose of theoretical reasoning. In this section, we utilize the static model of infection as described in unpublished work by Acemoglu et al. (2013). Specifically, we apply the network security game model to Erd\H{o}s-R\'{e}nyi random graphs. We characterize the difference in network infection rates between the case of actions chosen by rational utility-maximizing agents and the case of actions chosen to maximize total social welfare. This difference is significant, as it can be readily interpreted as the cost of anarchy in a society with interactions modeled by a random graph. 
 
 \subsection{Game Definition}
 
 The game proceeds on a network $A$ drawn from the set of Erd\H{o}s-R\'{e}nyi random graphs on $n$ nodes with edge probability $p$. Before the network is sampled from the ER graph distribution, each agent makes a security investment $q_i \in [0, 1]$, knowing only the values of $n$ and $p$, such that agent $i$ is immunized against infection at the beginning of the game with probability $q_i$. Agent $i$ incurs a cost $c(q_i)$ by choosing security level $q_i$, and we define all agents to have identical cost functions that are positive, strictly increasing, and strictly convex. 
 
-A random attacker then chooses one of the $n$ agents uniformly at random and exposes this agent to infection. If the chosen agent $i$ is not immunized, the infection spreads to all susceptible agents on the component of agent $i$. The utility function of agent $i$ is given by:
+A random attacker then chooses one of the $n$ agents uniformly at random and exposes this agent to infection. If the chosen agent $i$ is not immunized, the infection spreads to all susceptible agents on the component of agent $i$. We define $\textbf{P}(A, \textbf{q})$ to be the probability of infection of an agent on random graph $A$ when the agents collectively play security profile $\textbf{q}$. The utility function of agent $i$ is given by:
 \begin{eqnarray}
 	u_i(q_i) = -\textbf{P}(A, \textbf{q}) - c(q_i)
 \end{eqnarray} 
@@ -70,7 +70,7 @@ The expected probability that infection reaches any node is given by $\frac{S(q,
 \end{equation}
 Maximizing the left-hand sides for both of the equations above gives us $q^e = q^s = 0$ for the subcritical case. 
 
-Next, we consider the supercritical case, i.e. when a giant component exists. The probability of infection on a component smaller than the giant component is vanishingly small for large $n$, so we shall strict our attention to infection on the giant component. The probability of exposure of agent $i$ to infection in the supercritical case is the probability that the initial attack is delivered to a node in the giant component and that agent $i$ is located in the giant component. Since each of the above events occurs with probability $s(q, n)$, we can write the probability of exposure to infection as $\tilde{\textbf{P}}(A,q_{-i}) = s(q, n)^2$, where $s(q, n)$ is the size of the giant component defined as a fraction of the total number of nodes. We characterize $s(q, n)$ by adapting equation 12.15 from Newman to our model:
+Next, we consider the supercritical case, i.e. when a giant component exists. The probability of infection on a component smaller than the giant component is vanishingly small for large $n$, so we shall restrict our attention to infection on the giant component. The probability of exposure of agent $i$ to infection in the supercritical case is the probability that the initial attack is delivered to a node in the giant component and that agent $i$ is located in the giant component. Since each of the above events occurs with probability $s(q, n)$, we can write the probability of exposure to infection as $\tilde{\textbf{P}}(A,q_{-i}) = s(q, n)^2$, where $s(q, n)$ is the size of the giant component defined as a fraction of the total number of nodes. We characterize $s(q, n)$ by adapting equation 12.15 from Newman to our model:
 \begin{equation}
 	1 - s = e^{-(n(1-q)-1)ps}
 \end{equation}

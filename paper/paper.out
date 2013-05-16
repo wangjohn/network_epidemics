@@ -7,10 +7,12 @@
 \BOOKMARK [1][-]{section.3}{Simulation Results}{}% 7
 \BOOKMARK [2][-]{subsection.3.1}{Simulating the Static Model}{section.3}% 8
 \BOOKMARK [2][-]{subsection.3.2}{Simulation Results}{section.3}% 9
-\BOOKMARK [2][-]{subsection.3.3}{Computational Intractibility of i}{section.3}% 10
-\BOOKMARK [2][-]{subsection.3.4}{Computationally Intractable Problems}{section.3}% 11
-\BOOKMARK [1][-]{section.4}{Fast FPTAS for Infection Probabilities}{}% 12
-\BOOKMARK [2][-]{subsection.4.1}{Multiple-Source Multiple-Sink Infection Probabilities}{section.4}% 13
-\BOOKMARK [2][-]{subsection.4.2}{Summary of Karger's FPTAS for the All Terminal Problem}{section.4}% 14
-\BOOKMARK [2][-]{subsection.4.3}{Naive Extension to MSMSIP Problem}{section.4}% 15
-\BOOKMARK [2][-]{subsection.4.4}{Improvements to the Naive FPTAS for MSMSIP}{section.4}% 16
+\BOOKMARK [1][-]{section.4}{Computational Intractibility Results}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{Computational Intractibility of i}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Computationally Intractable Problems}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{Fast FPTAS for Infection Probabilities}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.4}{Multiple-Source Multiple-Sink Infection Probabilities}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.5}{Summary of Karger's FPTAS for the All Terminal Problem}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.6}{Naive Extension to MSMSIP Problem}{section.4}% 16
+\BOOKMARK [2][-]{subsection.4.7}{Improvements to the Naive FPTAS for MSMSIP}{section.4}% 17
+\BOOKMARK [1][-]{section.5}{Conclusion}{}% 18
