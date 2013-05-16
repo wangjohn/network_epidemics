@@ -1,6 +1,7 @@
 import random
 import history
 import sets
+from infection_mechanism import *
 
 # This is a class which plays the game of spreading an infection throughout the
 # graph.
@@ -87,3 +88,18 @@ class Infection:
             self.infection_mechanism = infection_mechanism
         else:
             self.infection_mechanism = BasicInfectionMechanism(self)
+
+
+class ComputeInfectionProbabilities:
+    def __init__(self, graph):
+        self.graph = graph
+
+    def compute(self, protection_list, start_node):
+        infection_probabilities = [None for i in xrange(self.graph.num_nodes)]
+        infection_probabilities[self.start_node] = 1
+
+        # Fill out the neighbors of the infected node
+        for i in self.graph.neighbors(self.start_node):
+            infection_probabilities[i] = 1 - protection_list[i]
+
+        # Now create a system of equations
